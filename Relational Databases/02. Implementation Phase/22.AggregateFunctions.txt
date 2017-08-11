@@ -1,0 +1,35 @@
+COUNT - MAX - MIN - AVG - SUM
+SELECT
+    AggregateFunction(col), col1, ..., coln
+    FROM table
+    WHERE condition-before-grouping
+    GROUP BY col1, ..., coln
+    HAVING condition-after-grouping;
+
+SELECT COUNT(*), jobs_id FROM employees GROUP BY jobs_id;
+SELECT MAX(salary), jobs_id FROM employees GROUP BY jobs_id;
+SELECT MIN(salary), jobs_id FROM employees GROUP BY jobs_id;
+SELECT AVG(salary), jobs_id FROM employees GROUP BY jobs_id;
+SELECT SUM(salary), jobs_id FROM employees GROUP BY jobs_id;
+SELECT MAX(salary) AS 'Maximum Salary', departments_name
+      FROM employees INNER JOIN departments
+      ON employees.departments_id = departments.departments_id
+      WHERE employees.departments_id != 10
+      GROUP BY departments_name
+      HAVING MAX(salary) > 11000;
+
+- GROUP BY column_name groups sets of rows together and operate on those
+  groups separately. GROUP BY groups query into groups and the aggregate
+  function then operate on those groups separately.
+- JOIN occures first, then GROUP BY and then the aggregate function.
+- HAVING for GROUP BY is like WHERE for SELECT.
+- COUNT execludes NULL from the result.
+- Attributes in select clause outside of aggregate functions must appear in group by list.
+- Note:  predicates in the having clause are applied after the 
+         formation of groups whereas predicates in the where 
+         clause are applied before forming groups.
+- All aggregate operations except count(*) ignore tuples with null values on the aggregated attributes
+- What if collection has only null values?
+  - count returns 0
+  - all other aggregates return null
+

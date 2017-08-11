@@ -1,0 +1,14 @@
+CREATE DATABASE database_name;
+CREATE TABLE table_name (col1 datatype1, ..., coln datatypen);
+CREATE TABLE table_name AS
+    <SELECT query>
+CREATE VIEW vw_name AS
+    <SELECT query>
+CREATE INDEX idx_col_table ON table_name(column_name);
+DROP DATABASE database_name;
+DROP TABLE table_name;
+DROP VIEW vw_name;
+ALTER TABLE table_name ADD COLUMN column_name datatype;
+ALTER TABLE table_name DROP COLUMN column_name;
+ALTER TABLE table_name MODIFY COLUMN column_name datatype;
+

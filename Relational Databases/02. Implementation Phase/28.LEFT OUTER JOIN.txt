@@ -1,0 +1,16 @@
+SELECT table_name.col_name, ...
+    FROM table_contain_fk LEFT OUTER table_contain_pk
+    ON table_contain_fk.fk = table_contain_pk.pk;
+
+SELECT alias1.col_name, alias2.col_name, ...
+    FROM table_contain_fk AS alias1 LEFT OUTER table_contain_pk AS alias2
+    ON alias1.fk = alias2.pk
+    WHERE condition(s)
+    ORDER BY alias.col, ...
+    ;
+LEFT OUTER JOIN returns same records returned by INNER JOIN plus those records from the table that contain the fk as NULL
+
+SELECT CONCAT(first_name, ' ', last_name) AS 'Full Name', departments_name AS 'Department' FROM
+    employees LEFT OUTER JOIN departments ON
+    employees.departments_id = departments.departments_id;
+

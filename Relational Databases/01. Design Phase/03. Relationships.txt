@@ -1,0 +1,937 @@
+Introduction to Relationships
+=============================
+
+- You can not jump to relationships until you normalize your database up
+to Third Normal Form.
+- Normalization leads to table decomposition.
+- Use "relationships" to connect tables together.
+- Normalization causes you to break down tables and change/move/remove
+columns around.
+
+Relationships
+=============
+ - One to Many Relationships
+ - One to One Relationships
+ - Many to Many Relationships
+ - Self Referencing Relationships
+
+==========================================================================
+
+One to Many Relationships
+=========================
+
+  Example
+  =======
+  The following tables are normalized up to the Third Normal Form.
+
+  Department
+  Dept Code is a primary key
+  Dept Code	Dept Name
+  FIN		Finance
+  HR		Human Resources
+  IT		Information Technology
+  RES		Research and Development
+
+  Employee
+  Emp ID is a primary key
+  Emp ID	Emp Fname	Emp Lname
+  100		Michael		Philips
+  200		Sara		Norman
+  300		Paul		McMahen
+  400		Suzzane		Buffet
+  500		Chris		Jacob
+  600		Maisam		Ronaldo
+  700		Noora		Marthon
+
+  - Each department has one or more employees.
+  - Each employee works in one and only one department.
+
+  Rule of Thumb
+  =============
+  How to now the relationship between two tables/entities?
+   - Ask the client, how the entities relate to each other?
+  How to build One to Many relationships between two tables/entities?
+   1- Determine the primary key of each table.
+   2- One of these tables should have a copy of the primary key of the
+      other table (as a foreign key).
+      - More percisely, the table at the Many side of the relation should
+        contain the primary key of the table on the One side of the
+        relation as a foriegn key.
+
+  Example
+  =======
+
+  << Violation >>
+  Department has only one Employee.
+
+  Department
+  Dept Code is a primary key
+  Dept Code     Dept Name		Emp ID
+  FIN           Finance			100
+  FIN		Finance			400
+  HR            Human Resources
+  IT            Information Technology
+  RES           Research and Development
+
+  Employee
+  Emp ID is a primary key
+  Emp ID        Emp Fname       Emp Lname
+  100           Michael         Philips
+  200           Sara            Norman
+  300           Paul            McMahen
+  400           Suzzane         Buffet
+  500           Chris           Jacob
+  600           Maisam          Ronaldo
+  700           Noora           Marthon
+
+  - You can not create duplicate primary key in the Department table.
+  - You violates the primary key uniqueness rule by duplicating the PK.
+  - Let's try the other way around.
+
+  << Right Way >>
+  Department has one or many Employees.
+
+  Department
+  Dept Code is a primary key
+  Dept Code     Dept Name
+  FIN           Finance
+  HR            Human Resources
+  IT            Information Technology
+  RES           Research and Development
+
+  Employee
+  Emp ID is a primary key
+  Emp ID        Emp Fname       Emp Lname	Dept Code
+  100           Michael         Philips		FIN
+  200           Sara            Norman		IT
+  300           Paul            McMahen		IT
+  400           Suzzane         Buffet		FIN
+  500           Chris           Jacob		FIN
+  600           Maisam          Ronaldo		HR
+  700           Noora           Marthon		RES
+
+  - If you tried to duplicate an Emp ID and assign the Dept Code to
+    another Dept Code this will violate the PK rule, the system will not
+    allow you to do that.
+  - If you needed to change the Dept Code, override the previous Dept Code
+  - Having Dept Code in Employee table is the right way to build the
+    relationship between Employee table and Department table because it
+    allows us to have the following relationship:
+     - A department has one or many employees.
+     - An employee belongs to one and only one department.
+  - Dept Code is a foreign key in Employee table.
+
+  - The system will only allow a Dept Code in Employee table only if this
+    Dept Code already exist in the Department table
+    (Referential Integrity).
+
+  - To find out the Dept Name, we have to go to the Department table and
+    find it using the Dept Code.
+
+==========================================================================
+
+Many to Many Relationships
+==========================
+
+  Example
+  =======
+  The following tables are normalized to the Third Normal Form.
+
+  Course
+  Course ID is a primary key
+  Course ID	Course Name
+  330		Math
+  440		Biology
+  550		Computer Studies
+  660		Technical Writing
+  770		Communication Skills
+  880		Physics
+
+  Student
+  Student ID is a primary key
+  Student ID	Student Surname
+  100		Taylor
+  200		Patel
+  300		Williams
+
+  - A student can register one or many courses.
+  - A course has one or many students.
+
+  How can we construct Many to Many relatoinships?
+  ================================================
+  1- Identify the primary key of each table.
+  2- Create the junction/linking table which is a table that contain
+     the primary keys of the two tables as foreign keys.
+  - This table is called weak entity, you can name this table anything
+    you like as long as it is discriptive.
+  - Weak table/Junction table/Associative table/Linking table
+  - This table is called weak because it doesn't stand by itself, if you
+    removed Course table from the database, the Student Course table would
+    not exist any more, same scenario occurs when we remove Student table.
+    This table is only there as long as you have both Course table and
+    Student table in the database.
+  - Student table and Course table are strong entities (stand-alone table)
+
+  - How do you know if a table is strong or weak entity?
+    A strong table has its own primary key but a weak table doesn't. Weak
+    table has only foreign keys, it doesn't have any primary key.
+
+  - Student Course/Course Student/Student Records table suffers from
+    lack of entity integrity due to absance of primary key.
+  - To enforce entity integrity on the junction table, we must assign a
+    primary key for that table.
+    - We can assign a primary key on the two columns of foreign keys or
+      assign a surrogate key.
+    - A composite primary key of the two foreign keys is prefered in this
+      case.
+  - Is the junction table is considered as a strong entity after we
+    assigned it a composite primary key?
+    No, because the columns that compose the primary key are not stand-
+    alone, they are not really belong to the junction table.
+
+  << Violation >>
+  A course has one or many students but a student can register only one
+  course.
+
+  Course
+  Course ID is a primary key
+  Course ID     Course Name
+  330           Math
+  440           Biology
+  550           Computer Studies
+  660           Technical Writing
+  770           Communication Skills
+  880           Physics
+
+  Student
+  Student ID is a primary key
+  Student ID    Student Surname		Course ID
+  100           Taylor			330
+  100		Taylor			440
+  200           Patel			330
+  300           Williams
+
+  << Violation >>
+  Because it only fullfils one part of the relationship that is
+  "A student can register to one or many courses" but it doesn't fullfil
+  the second part of the relationship "A course can have one or many
+  students"
+
+  Course
+  Course ID is a primary key
+  Course ID     Course Name		Student ID
+  330           Math			100
+  330		Math			200
+  440           Biology			100
+  550           Computer Studies
+  660           Technical Writing
+  770           Communication Skills
+  880           Physics
+
+  Student
+  Student ID is a primary key
+  Student ID    Student Surname
+  100           Taylor
+  200           Patel
+  300           Williams
+
+  << Right Way >>
+  A course has one or many students and a student can register one or
+  many courses.
+
+  Course
+  Course ID is a primary key
+  Course ID     Course Name
+  330           Math
+  440           Biology
+  550           Computer Studies
+  660           Technical Writing
+  770           Communication Skills
+  880           Physics
+
+  Student
+  Student ID is a primary key
+  Student ID    Student Surname
+  100           Taylor
+  200           Patel
+  300           Williams
+
+  Student Course/Course Student/Student Records
+  Student ID	Course ID
+  100		440
+  100		880
+  300		330
+  300		440
+
+  - To enforce entity integrity on the Student Course/Course Student/
+    Student Records table we assign 'Student ID' and 'Course ID' as
+    a composite primary key.
+
+  - Can we add a new column to the junction table?
+    Defenitely yes, as long as it depends on the entire primary key
+    (doesn't violate the second normal form).
+
+  << Final Solution >>
+
+  Course
+  Course ID is a primary key
+  Course ID     Course Name
+  330           Math
+  440           Biology
+  550           Computer Studies
+  660           Technical Writing
+  770           Communication Skills
+  880           Physics
+
+  Student
+  Student ID is a primary key
+  Student ID    Student Surname
+  100           Taylor
+  200           Patel
+  300           Williams
+
+  Student Course/Course Student/Student Records
+  Student ID is a foreign key references Student table
+  Course ID is a foreign key references Course table
+  Student ID and Course ID is a composite primary key
+  Student ID    Course ID	Register Date
+  100           440		January 1, 2012
+  100           880		January 1, 2012
+  300           330		May 15, 2013
+  300           440		December 10, 2014
+
+==========================================================================
+
+One to One Relationships
+========================
+
+- We need One to one relaitonships to maintain privacy of private and
+  sensitive data. That is, not every one can access all the data including
+  the sensitive data.
+- You can apply One to One relationship on a table that have sensitive and
+  in-sensitive attributes.
+- We broke down the table into two tables, one has all sensitive attributes
+  and the other has all in-sensitive attributes.
+- To build the relationship between the two tables we send the primary key
+  resides in the table that contain all in-sensitive attributes to the
+  table that contain all sensitive attributes as a foreign key.
+- Now, the table with all sensitive attributes has referential integrity
+  because it has a foreign key but it doesn't have entity integrity because
+  it doesn't have a primary key; that is, it can has duplicate entries.
+- So, we assign the foreign key as both foreign key references the other
+  table primary key and also we assign it as a primary key for this table.
+- The table that has all in-sensitive data is a strong entity but the table
+  that has all sensitive data is a weak entity.
+- You must insert first into the table that contains the insensitive data,
+  then you insert into the table that contains sensitive data.
+  (Referential Integrity)
+
+- We also need One to One relationship when dealing with (Multi-value
+  indefinite attributes which we through away from the table in 1NF).
+
+  Example
+  =======
+  The following table is normalized up to Third Normal Form
+
+Customer
+Customer ID is a primary key
+Customer ID | FirstName | LastName | CreditCardNumber | Username | Password
+100         | Philips	| Ramsey   | 1110002020	      | rams1980 | 55g7j4
+200         | Norman    | Dave     | 111111111        | norman333| gg56gD
+300         | McMahen   | Ronald   | 2222222222       | ronald_ha| 5fe34
+400         | Philips   | Thomas   | 333333333        | ph_thomas| 665f
+500         | Jacob     | Norman   | 4444444444       |jacob_1970| hjh664
+600         | Maisam    | Rina     |  55555555        | rina_wow | 554df6
+700         | Don       | Cris     |  66666666        | doncris  | rrx335g
+
+- Customer ID, FirstName, LastName and Username are in-sensitive attributes
+- CreditCardNumber and Password are sensitive attributes
+
+Customer
+Customer ID is a primary key
+Customer ID | FirstName | LastName | Username
+100         | Philips   | Ramsey   | rams1980
+200         | Norman    | Dave     | norman333
+300         | McMahen   | Ronald   | ronald_ha
+400         | Philips   | Thomas   | ph_thomas
+500         | Jacob     | Norman   |jacob_1970
+600         | Maisam    | Rina     | rina_wow
+700         | Don       | Cris     | doncris
+
+Customer Details
+CreditCardNumber | Password
+1110002020       | 55g7j4
+111111111        | gg56gD
+2222222222       | 5fe34
+333333333        | 665f
+4444444444       | hjh664
+55555555         | 554df6
+66666666         | rrx335g
+
+- Building the relaionship between the two tables (Referential Integrity)
+
+Customer
+Customer ID is a primary key
+Customer ID | FirstName | LastName | Username
+100         | Philips   | Ramsey   | rams1980
+200         | Norman    | Dave     | norman333
+300         | McMahen   | Ronald   | ronald_ha
+400         | Philips   | Thomas   | ph_thomas
+500         | Jacob     | Norman   |jacob_1970
+600         | Maisam    | Rina     | rina_wow
+700         | Don       | Cris     | doncris
+
+Customer Details
+Customer ID is a foreign key references Customer (Customer ID)
+CreditCardNumber | Password | Customer ID
+1110002020       | 55g7j4   | 100
+111111111        | gg56gD   | 200
+2222222222       | 5fe34    | 300
+333333333        | 665f     | 400
+4444444444       | hjh664   | 500
+55555555         | 554df6   | 600
+66666666         | rrx335g  | 700
+
+- Setting up Entity Integrity over the Customer Details table
+
+Customer
+Customer ID is a primary key
+Customer ID | FirstName | LastName | Username
+100         | Philips   | Ramsey   | rams1980
+200         | Norman    | Dave     | norman333
+300         | McMahen   | Ronald   | ronald_ha
+400         | Philips   | Thomas   | ph_thomas
+500         | Jacob     | Norman   |jacob_1970
+600         | Maisam    | Rina     | rina_wow
+700         | Don       | Cris     | doncris
+
+Customer Details
+Customer ID is a foreign key references Customer (Customer ID)
+Customer ID is a primary key
+Customer ID | CreditCardNumber | Password
+100         | 1110002020       | 55g7j4
+200         | 111111111        | gg56gD
+300         | 2222222222       | 5fe34
+400         | 333333333        | 665f
+500         | 4444444444       | hjh664
+600         | 55555555         | 554df6
+700         | 66666666         | rrx335g
+
+- Now not every one can access this private data, the one who have access
+  to the Customer table doesn't have access to the Customer Details table.
+- Customer is a strong entity and Customer Details is a weak entity because
+  the Customer Details records don't exist without the existance of the
+  records in the Customer table.
+- You must insert first in the Customer table then you insert in Customer
+  Details table.
+
+============================================================================
+
+Self-Reference Relationship (Unary Relationship)
+================================================
+
+- When you have bunch of data that come in a hirarichal structure, this is
+  a good indication that you need a self-reference relationship.
+
+  Example
+  =======
+  The following is an organization structure which has the list of managers
+  and employees.
+
+				Mathew Fullerton
+			Executive VP Sales and Marketing
+					|
+					|
+			---------------------------------
+			|			    	|
+			|				|
+		    Bob Doyle			  Lilian Jones
+		    Sales VP		       Marketing Manager
+	     -----------------------			|
+	     |		           |			|
+	     |		           |		Michelle Turner
+	Mateo Lopez          Gabriella Lee	Marketing Analyst
+	     |		           |
+	     |		           |
+       Jilian Hendrson       joseph Kerr
+     Sales Representative    Sales Analyst
+
+  Employee
+  Emp ID is a primary key
+  Emp ID	Emp Fname	Emp Lname
+  100		Mathew		Fullerton
+  200		Bob		Doyle
+  300		Lilian		Jones
+  400		Michelle	Tunner
+  500		Mateo		Lopez
+  600		Gabriella	Lee
+  700		Jilian		Hendrson
+  800		Joseph		Kerr
+
+- To build the relationship between the employees, we will create a foreign
+  key in Employee table.
+
+  Employee
+  Emp ID is a primary key
+  Emp ID is a foreign key
+  Emp ID        Emp Fname       Emp Lname	Emp ID
+  100           Mathew          Fullerton
+  200           Bob             Doyle
+  300           Lilian          Jones
+  400           Michelle        Tunner
+  500           Mateo           Lopez
+  600		Gabriella	Lee
+  700           Jilian          Hendrson
+  800           Joseph          Kerr
+
+- Emp ID (FK) referes back to Emp ID (PK) in the same table.
+- It is confusing naming the foreign key with the same name as the primary
+  key in the same table.
+- We will change the name of the foreign key to any other name.
+
+  Employee
+  Emp ID is a primary key
+  Manager ID is a foreign key references Employee (Emp ID)
+  Emp ID        Emp Fname       Emp Lname       Manager ID
+  100           Mathew          Fullerton       NULL
+  200           Bob             Doyle           100
+  300           Lilian          Jones           100
+  400           Michelle        Tunner          300
+  500           Mateo           Lopez           200
+  600		Gabriella	Lee		200
+  700           Jilian          Hendrson        500
+  800           Joseph          Kerr            600
+
+  Example
+  =======
+  Assume that we have a main menu list online and it has sub categories.
+
+  Menu Item | Main Menu		| Menu Item | Menu Item
+	      Real Estate       |
+	      Cars and Vehicles |
+	      Jobs            ->|    Accounting    |
+				| Customer Service |
+				|        IT	 ->| Software Development |
+						   |      Management	  |
+
+- The list goes into a tree-like structure (Hierarical Structure), this
+  is a good indication that we need self-referencing relationship.
+
+  Category
+  Category ID is a primary key
+  Category ID	Cat Name
+  1		Main Menu
+  2		Real Estate
+  3		Cars and Vehicles
+  4		Jobs
+
+- Building the relationship
+
+  Category
+  Category ID is a primary key
+  Parent Category ID is a foreign key references Category (Category ID)
+  Category ID   Cat Name		Parent Category ID
+  1             Main Menu		NULL
+  2             Real Estate		1
+  3             Cars and Vehicles	1
+  4             Jobs			1
+  5		Accounting		4
+  6		Customer Service	4
+  7		IT			4
+  8		Software Development	7
+  9		Management		7
+
+============================================================================
+
+Extended 1 to 1 Relationship
+============================
+- Used when we have to (Eliminate Indefinite Multi-value) with consistent
+  alternating behavior.
+- Consistent alternating columns means consistent pattern of gaps between
+  set of columns.
+- What has caused the consistent gaps?
+  The business rule caused this gap to happen.
+- What is a business rule?
+  A business rule is a rule of a business, company, or corporation. It is
+  a rule that defines or constrains some aspect of business and always
+  resolves to either true or false. Business rules are intended to assert
+  business structure or to control or influence the behavior of the business
+- We through out the Multi-value attributes out of the table, then we create
+  a table for each of them, each sub-type table contains the PK of the
+  super-type table as a foreign key as well as a primary key.
+- Note that the main table is called super-type table and all other tables
+  are called sub-type tables.
+- The super-type table is generalized and all sub-type tables are
+  specialized.
+- What we mean by specialized tables is that we can add an attribute or
+  feature that belongs to some of them regardless of the others.
+- All sub-type tables are weak entites and the super-type table is a strong
+  entity if we dropped it, there is no meaning for any of the sub-type
+  tables. The sub-type tables are weak entites because they borrow their
+  primary key from the super type table.
+- To determine the type of the sub-type from the super-type table without
+  looking for it in all sub-type tables, we simply add a new column in the
+  super-type table called Subtype Discriminator that is assigned the value
+  of the sub-type.
+
+  Example
+  =======
+
+Post
+PostID is a primary key
+PostID | Title | Desc | ImageName | videoName | AudioName | PostDate
+99975  | title1| Desc1| image.jpg |           |           | 1 Dec, 2014
+66577  | title2| Desc2|           |           |           | 10 June, 2015
+88822  | title3| Desc3|           |           | audio.mp3 | 12 April, 2014
+33354  | title4| Desc4|           | video.mp4 |           | 10 Mars, 2015
+44444  | title5| Desc5|           |           |           | 1 Feb, 2014
+
+Displayed Post
+---------
+|Ad#|626|
+---------
+------------------
+|Date|2 Sep, 2014|
+------------------
+----------------------------------------------------------------------------
+|		Canadian Business English - BUSN 732 - $45                 |
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+|Course book for Semeser 1: Global Business Management, Centennial College.|
+|..Business								   |
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+|									   |									      |										 |
+----------------------------------------------------------------------------
+
+Form
+----------------------------------------------------------------------------
+|									   |
+| ------------------------------------------------------------------------ |
+| |			      Post your Ad Now				 | |
+| ------------------------------------------------------------------------ |
+|									   |
+|		-------------------------------------------------          |
+|  Title 	|						|          |
+|		-------------------------------------------------          |
+|									   |
+|		-------------------------------------------------          |
+|  Description	|						|          |
+|		|						|          |
+|		|						|          |
+|		|						|          |
+|		|						|          |
+|		-------------------------------------------------          |
+|									   |
+|		----------------					   |
+|  Post Type	|  Free Post ->|					   |
+|		----------------					   |
+|									   |
+|		----------						   |
+|		| Submit |						   |
+|		----------						   |
+|									   |
+----------------------------------------------------------------------------
+
+- We have four types of posts:
+			Image	Audio	Video
+  - Free Post		No	No	No
+  - Standard Post	Yes	No	No
+						-----------  --------
+				   Upload image |         |  |Browse|
+						-----------  --------
+  - Professional Post	No	Yes	No
+						-----------  --------
+				   Upload Audio |         |  |Browse|
+						-----------  --------
+  - Ultimate Post	No	No	Yes
+                                                -----------  --------
+                                   Upload Video |         |  |Browse|
+                                                -----------  --------
+
+- After some time we the owner of the website needed to add a new field for
+  flash files, then he needed to add text files, ...
+- This is a horizontal growth behavior, remember that, a table should only
+  grow vertically not horizontally.
+- This File Type field is indefinite (Eliminating Multi-value 1NF), we must
+  through it away of this table.
+- Also, note that we require one and only one value to be assigned for each
+  record and all other values are NULL.
+- What has caused the consistent gaps?
+  The business rule caused this gap to happen. The owner of the website
+  restricted each classfied as post to have one and only one multimedia
+  that is image, video, audio, or no multimedia at all. Based on that rule,
+  the alternating columns issue showed up.
+
+Post
+PostID is a primary key
+--------------------------------------
+PostID | Title | Desc | PostDate
+99975  | title1| Desc1| 1 Dec, 2014
+66577  | title2| Desc2| 10 June, 2015
+88822  | title3| Desc3| 12 April, 2014
+33354  | title4| Desc4| 10 Mars, 2015
+44444  | title5| Desc5| 1 Feb, 2014
+--------------------------------------
+Standard Post
+---------
+ImageName
+image.jpg
+---------
+Professional Post
+---------
+AudioName
+audio.mp3
+---------
+Ultimate Post
+---------
+VideoName
+video.mp4
+---------
+
+- Creating The Extended One to One Relationship
+
+Post
+PostID is a primary key
+--------------------------------------
+PostID | Title | Desc | PostDate
+99975  | title1| Desc1| 1 Dec, 2014
+66577  | title2| Desc2| 10 June, 2015
+88822  | title3| Desc3| 12 April, 2014
+33354  | title4| Desc4| 10 Mars, 2015
+44444  | title5| Desc5| 1 Feb, 2014
+--------------------------------------
+Standard Post
+Post ID is a foreign key references Post (Post ID)
+-------------------
+Post ID | ImageName
+99975   | image.jpg
+-------------------
+Professional Post
+Post ID is a foreign key references Post (Post ID)
+-------------------
+Post ID | AudioName
+88822   | audio.mp3
+-------------------
+Ultimate Post
+Post ID is a foreign key references Post (Post ID)
+-------------------
+Post ID | VideoName
+33354   | video.mp4
+-------------------
+
+- To enforce entity integrity over these tables (Also inforces the business
+  rules), we will assign Post ID in them as a foreign key references Post
+  (Post ID) as well as a primary key.
+
+Post
+PostID is a primary key
+--------------------------------------
+PostID | Title | Desc | PostDate
+99975  | title1| Desc1| 1 Dec, 2014
+66577  | title2| Desc2| 10 June, 2015
+88822  | title3| Desc3| 12 April, 2014
+33354  | title4| Desc4| 10 Mars, 2015
+44444  | title5| Desc5| 1 Feb, 2014
+--------------------------------------
+Standard Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | ImageName
+99975   | image.jpg
+-------------------
+Professional Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | AudioName
+88822   | audio.mp3
+-------------------
+Ultimate Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | VideoName
+33354   | video.mp4
+-------------------
+
+- Post table is called super-type table while Standard Post, Professional
+  Post and Ultimate Post tables are called sub-type tables.
+- Post table is generalized and the other tables are specialized.
+  For Example:
+  - If we added a new attribute (feature) to the Ultimate Post table, it
+    will not be available for the other tables.
+
+Form
+----------------------------------------------------------------------------
+|                                                                          |
+| ------------------------------------------------------------------------ |
+| |                           Post your Ad Now                           | |
+| ------------------------------------------------------------------------ |
+|                                                                          |
+|               -------------------------------------------------          |
+|  Title        |                                               |          |
+|               -------------------------------------------------          |
+|                                                                          |
+|               -------------------------------------------------          |
+|  Description  |                                               |          |
+|               |                                               |          |
+|               |                                               |          |
+|               |                                               |          |
+|               |                                               |          |
+|               -------------------------------------------------          |
+|                                                                          |
+|               --------------------                                       |
+|  Post Type    |  Ultimate Post ->|                                       |
+|               --------------------                                       |
+|                                                                          |
+|                  -------------------                                     |
+|  personal Websie | www.example.com |                                     |
+|                  -------------------                                     |
+|                                                                          |
+|               ----------                                                 |
+|               | Submit |                                                 |
+|               ----------                                                 |
+|                                                                          |
+----------------------------------------------------------------------------
+
+Post
+PostID is a primary key
+--------------------------------------
+PostID | Title | Desc | PostDate
+99975  | title1| Desc1| 1 Dec, 2014
+66577  | title2| Desc2| 10 June, 2015
+88822  | title3| Desc3| 12 April, 2014
+33354  | title4| Desc4| 10 Mars, 2015
+44444  | title5| Desc5| 1 Feb, 2014
+--------------------------------------
+Standard Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | ImageName
+99975   | image.jpg
+-------------------
+Professional Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | AudioName
+88822   | audio.mp3
+-------------------
+Ultimate Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+--------------------------------------
+Post ID | VideoName | Personal Website
+33354   | video.mp4 | www.example.com
+--------------------------------------
+
+- The columns in Standard Post, Professional Post and Ultimate Post are
+  specialized only to these table (Post Types) but the columns in post table
+  are generalized to any type of a post.
+- Standard Post, Professional Post and Ultimate Post tables are weak entites
+  while Post is a strong entity.
+- Standard Post, Professional Post and Ultimate Post are weak entities
+  because they borrow their primary key (Post ID) from Post table.
+- Now if we want to know the type of each post in the Post table, we have
+  to go and look for it in each sub-type table until we find it.
+- If there is a way to know the type of a post in the Post table easily and
+  quickly?
+  Yes, by adding a new attribute called Post Type in the Post table which
+  contains the type of the post (Standard, Free, Professional, Ultimate).
+  This new column is called Subtype Discriminator.
+
+Post
+PostID is a primary key
+-----------------------------------------------------
+PostID | Title | Desc | PostDate       | Post Type
+99975  | title1| Desc1| 1 Dec, 2014    | Standard
+66577  | title2| Desc2| 10 June, 2015  | Free
+88822  | title3| Desc3| 12 April, 2014 | Professional
+33354  | title4| Desc4| 10 Mars, 2015  | Ultimate
+44444  | title5| Desc5| 1 Feb, 2014    | Free
+-----------------------------------------------------
+Standard Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | ImageName
+99975   | image.jpg
+-------------------
+Professional Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+-------------------
+Post ID | AudioName
+88822   | audio.mp3
+-------------------
+Ultimate Post
+Post ID is a foreign key references Post (Post ID)
+Post ID is a primary key
+--------------------------------------
+Post ID | VideoName | Personal Website
+33354   | video.mp4 | www.example.com
+--------------------------------------
+
+  Example
+  =======
+  Membership types
+   - Free membership
+   - Personal membership: personal image
+   - Premium membership : personal video
+   - Supreme membership : image and video
+
+Member
+Member ID is a primary key
+Member ID | Username    | Password   | Personal Image       | Personal Video
+100	  | james-2014  | 123456     | james.png            | my_vid.wmv
+200       | sara_thomas | pass66f3rt |                      | sara_promo.mwv
+300       | thehulk_wow | 556lkkvmd  |                      | gary_video.wmv
+400       | dupe-gamer  | 665lkdd3   | chris_prof_photo.jpg |
+500       | marina      | 5565544KDS |                      |
+
+- Indefinite Multi-value attribute & Consistent Alternating Columns
+- We break down the table as follows:
+
+Member
+Member ID is a primary key
+Membership is a Subtype Discriminator
+Member ID | Username    | Password   | Membership
+100       | james-2014  | 123456     | Supreme
+200       | sara_thomas | pass66f3rt | Premium
+300       | thehulk_wow | 556lkkvmd  | Premium
+400       | dupe-gamer  | 665lkdd3   | Professional
+500       | marina      | 5565544KDS | Free
+
+Professional
+Member ID is a foreign key references Member (Member ID), enforces
+referential integrity
+Member ID is a primary key, enforces entity integrity
+Member ID | Personal Image
+100       | james.png
+400       | chris_prof_photo.jpg
+
+Premium
+Member ID is a foreign key references Member (Member ID), enforces
+referential integrity
+Member ID is a primary key, enforces entity integrity
+Member ID | Personal Video
+100       | my_vid.wmv
+200       | sara_promo.wmv
+300       | gary_video.wmv
+
+- If we need to add specific features to the Supreme type, then we must
+  separate it from Premium and Professional types as follows:
+
+Supreme
+Member ID is a foreign key references Member (Member ID), enforces
+referential integrity
+Member ID is a primary key, enforces entity integrity
+Member ID | Personal Image | Personal Video | Any Additional Features
+100       | james.png      | my_vid.wmv     |
+
+============================================================================
+
+

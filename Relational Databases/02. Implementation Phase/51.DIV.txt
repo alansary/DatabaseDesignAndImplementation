@@ -1,0 +1,2 @@
+column_name/numeric_value DIV number;
+

@@ -1,0 +1,2 @@
+RIGHT('string_literal'/column_name, number_of_right_most_characters_returned);
+

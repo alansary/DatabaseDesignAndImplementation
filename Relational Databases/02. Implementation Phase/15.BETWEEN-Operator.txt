@@ -1,0 +1,6 @@
+-- BETWEEN operator
+/*
+SELECT * FROM table_name WHERE col_name BETWEEN min_val AND max_val;
+*/
+SELECT * FROM Customer WHERE Age BETWEEN 23 AND 25;
+

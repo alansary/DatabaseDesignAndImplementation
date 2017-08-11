@@ -1,0 +1,33 @@
+Business Rules
+==============
+
+A region has one or many countries.
+A country belongs to one and only one region.
+
+A country has one or many locations.
+A location belongs to one and only one country.
+
+A location has one or many departments.
+A department belongs one and only one location.
+
+A department has zero or many employees.
+  - If the department is new, it will has no employees.
+An employee belongs to zero or one departments.
+  - ex-employees won't be associated with any department.
+
+A job has zero or many employees.
+An employee has one and only one job.
+
+A manager can manage zero or many employees.
+An employee is managed by zero or one manager.
+
+job_history keeps track of the start_date and end_date of a job_title that
+an employee had before
+
+A job has zero or many job_history.
+A job_history has one and only one job.
+An employee has zero or many job_history.
+A job_history has one and only one employee.
+A department has zero or many job_history.
+A job_history has one and only one department.
+

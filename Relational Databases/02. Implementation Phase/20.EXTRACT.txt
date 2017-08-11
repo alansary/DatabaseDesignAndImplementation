@@ -1,0 +1,6 @@
+SELECT EXTRACT(YEAR FROM 'yy-mm-dd');
+SELECT EXTRACT(MONTH FROM 'yy-mm-dd');
+SELECT EXTRACT(DAY FROM 'yy-mm-dd');
+
+SELECT EXTRACT(YEAR FROM hire_date), EXTRACT(MONTH FROM hire_date), EXTRACT(DAY FROM hire_date) FROM employees;
+

@@ -1,0 +1,5 @@
+UPDATE table_name SET col1 = val1, col2 = val2, ..., coln = valn;
+UPDATE table_name SET col1 = val1, col2 = val2, ..., coln = valn WHERE condition;
+
+UPDATE employees SET email = CONCAT(email, '@yahoo.com') WHERE employees_id IN(5, 6);
+

@@ -1,0 +1,23 @@
+Install Oracle Database Express Edition 11g Release 2 (Database)
+Install Oracle SQL Developer (GUI to manage the database)
+Open Oracle SQL Developer:
+  - Add new connection.
+  - Connection name: Any name
+  - Username: Default is SYS or SYSTEM
+  - Password: The password you assigned while installation of the database
+  - Hostname: localhost (Installed in our machine)
+  - Port: Default is 1521 (Port for 'Oracle Database Listener: 1521)
+  - (Port for 'SQL Services for Microsoft Transaction Server': 2030)
+  - (Port for 'Oracle HTTP Listener': 8080)
+  - (Destination Folder: C:\oraclexe\)
+  - (Oracle Home: C:\oraclexe\app\oracle\product\11.2.0\server\)
+  - (Oracle Base: C:\oraclexe\)
+  - Connection Type: Basic
+  - Rule: SYSDBA
+  - SID: xe
+
+Status: Faliure-Test failed:IOError: The Network Adapter could not establish
+the connection
+ - Run OracleXETNSListener
+ - Run OracleServiceXE
+

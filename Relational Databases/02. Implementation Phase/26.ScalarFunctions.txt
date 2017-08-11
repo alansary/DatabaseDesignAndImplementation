@@ -1,0 +1,4 @@
+UPPER - LOWER - LENGTH - CONCAT - ROUND
+SELECT UPPER(first_name), LOWER(first_name), LENGTH(first_name), CONCAT(first_name, ' ', last_name) AS 'Full Name', ROUND(commission_pct, 2)
+    FROM employees;
+

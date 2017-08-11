@@ -1,0 +1,11 @@
+ALTER TABLE table_name ADD column_name column_datatype;
+OR ALTER TABLE table_name ADD COLUMN column_name column_datatype;
+ALTER TABLE table_name MODIFY column_name column_datatype;
+OR ALTER TABLE table_name MODIFY COLUMN column_name column_datatype;
+ALTER TABLE table_name RENAME TO new_table_name;
+ALTER TABLE table_name DROP COLUMN column_name;
+
+Oracle
+======
+ALTER TABLE table_name RENAME COLUMN column_name TO new_column_name;
+

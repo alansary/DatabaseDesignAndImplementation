@@ -1,0 +1,546 @@
+### SQLite Key Features ###
+Features:
+ 1. Relational Database Management System (RDBMS): i.e. MySQL, Oracle, Sybase, DB2, etc.
+ 2. Self-contained DB
+     a. Single file contains All DB components: tables, views, triggers, indices, etc.
+     b. Requires disk access permissions.
+ 3. Transactional - Atomic, Consistent, Isolated, Durable (ACID)
+ 4. Scaleable - i.e.14-TB DB limit
+     Note: EXT4 supports 16 Tebibytes (2**44)
+ 5. Cross-platform binary file format - Windows, Linux, Unix, etc.
+ 6. Low-concurrency - facilitates speed - ideal for embedded applications
+ 7. Serverless - Unlike traditional RDBMSs - i.e. MySQL, MS SQL, Oracle, PostgreSQL, etc.
+    Note: Traditional model is historically Client/Server
+    Note: Client/Server model usually binds RDBMS to TCP Port and clients access via TCP Port or Unix Domain Sockets
+    Note: SQLite is entirely File-Based
+    (If you have access to the file, you will have access to all the contents of the file)
+ 8. Requires no configuration (Zero-configuration)
+     Note: No config files or setup routine to ensure - i.e. default 'admin' credentials, ports to bind, etc.
+ 9. Multiple users of a system may maintain multiple, distinct SQLite DB files and access them concurrently
+ 10. In-memory (Temporary) tables - available so long as access is maintained via SQLite client
+     Note: Ideal for mobile platforms. Just-in-time table instantiation (app opens)/destruction (app closes)
+ 11. Terminal Monitor - 'sqlite3' - Command Line Interface (CLI)
+ 12. Note: NOT to be used in Client/Server mode due to file-locking concerns of NFS, etc.
+    Note: Use local I/O instead
+ 13. Reader/Writer Locks
+    a. Reads - prevents others from writing
+    b. Writes - prevents others from reading
+    Note: However, multiple processes may READ simultaneously
+    Note: This does NOT pose an integrity concern
+ 14. Dynamic Typing (DT) of common types: TEXT, INTEGER, REAL, NULL, BLOB
+ 15. Manifest Typing - Data determines the daya type, not the static association at the columnar level: i.e. MySQL
+    a. A column can contain data values of varying types - Data are NEVER truncated
+    Note: Long exception: 'INTEGER PRIMARY KEY' columns store only INTEGERS (64-bit signed)
+ 16.Variable-length records - Each record occupies required storage, plus overhead: i.e. (type and length)
+    i.e. If column is described as: 'VARCHAR(256)', but data occupy 10-bytes, SQLite stores 10-bytes
+
+### SQLite Terminal Monitor (Client) ###
+Features:
+ 1. 'sqlite3' - Client - terminal monitor utility
+  a. Interactive
+  b. Non-interactive
+ 2. Auto-creates DB if non-existent upon invocation
+ 3. Opens the referenced DB, if exists, otherwise
+ 4. Ability to attach 1 or more DBs during session
+ 5. Import/Export capabilities
+ 6. Maintains, cross-session, per-$USER, command-history: i.e. BASH
+Tasks:
+ 1. Create New DB
+  a. 'sqlite3 test' - enters interactive terminal monitor
+ 2. Use Interactive Interface
+  a. '.help' - returns help
+  b. '.databases' - lists attached DBS
+Note: First DB is called: 'main'
+Note: subsequently attached DBS reflect the name used during attachement
+Note: Each SQLite DB maintains a more-or-less immutable SCHEMA table: 'sqlite_master'
+Note: 'more-or-less' immutable means that it is system-managed
+Note: You may not use: 'sqlite_' in defining tables - reserved
+ 3. Create New Table with Auto-Incrementing column (id)
+  a. 'CREATE TABLE results (id INTEGER PRIMARY KEY, date date, message text);'
+Note: The built-in commands don't require a semi-colon termination
+  b. '.tables' - reveals the tables
+  c. '.dump' - reveals TABLE INFO (Show you the SCHEMA)
+  d. 'select * from results;' - SQL Query
+ 4. Drop Table
+  a. 'DROP TABLE results;' && '.tables'
+  b. .quit - quits the SQLite Terminal Monitor
+(LINUX COMMAND) file file_name
+  d. select * from sqlite_master - Interegate the SCHEMA DB which reveales the tables that are defined
+Note: sqlite_master is fully protected, we cannot drop it or any of its contents
+ 5. Re-create Table
+  a. Use command history
+ 6. Backup | Restore - Built-in
+  a. '.backup FILE' - defaults to 'main' DB
+  b. '.restore FILE' - defaults to 'main' DB
+Note: Restorations resets the current 'main' DB to the contents of the BACKUP file, reclaiming unused space as needed.
+ 7. CLI - Usage
+  a. Usage: 'sqlite3 [OPTIONS] FILENAME [SQL]'
+  b. 'sqlite3 test 'SELECT * FROM results;'
+ 8. INSERT SOME JUNK DATA INTO TABLE -STANDARD SQL DML
+  a. 'INSERT INTO results (date, message) VALUES ('2012-09-24', 'MESSAGE 1');'
+  b. 'SELECT * FROM results;'
+ 9. USE CLI TO DUMP DATA
+  a. 'sqlite3 test 'SELECT * FROM results;'' - formats output using default 'list' mode with '|' separator
+  b. Using HTML Format
+   'sqlite3 -html test 'SELECT * FROM results;''
+  c. Using CSV Format
+   'sqlite3 -csv test 'SELECT * FROM results;'
+Note: Default 'list' format is easily parseable by other standard Linux | Unix commands
+Note: ';' can be usually omitted when executing: 'sqlite3' non-interactively, however, preserve for consistency
+
+### Data Types & Manifest Typing ###
+>> Strict typing is not enforced <<
+Features:
+ 1. 5 Data Types (Classes)
+ 2. Type Affinity (Columnar preferences (hints))
+ 3. Type Affinity rules are NOT enforced per-column
+Note: Column may reflect various types of data across rows
+ 4. Types (Classes):
+  a. TEXT - Various UTF[8, 16] Types - Assigned if type specified is: *CHAR*, TEXT, *CLOB*, etc.
+  b. INTEGER - 1, 2, 3, 4, 6, or 8 - bytes - depends on presented value
+i.e. If signed, then range: -9ExaBytes through +9EB, If unsigned, then range: + 18EB
+Note: File System limitations, i.e. EXT4, will restrict hypothetical limits
+Note: 'INTEGER PRIMARY KEY' columns (auto-incrementing) are constrained by 'INTEGER' data class (type) definition
+Note: That means your rows will be restricted
+  c. REAL - 8-byte (64-bit)  floating point - *REAL, *FLOAT*, *DOUB*, etc.
+  d. BLOB - byte-blobs: i.e. images, PDFs, etc. - facillitates serving content directly from the DB
+  e. NUMERIC
+  f. NULL - undefined (No Data)
+  g. NONE - No type affinity associated with column (No Type)
+Note: Booleans are handled as: INTEGER [0, 1]
+Note: Dates are stored as: TEXT, REAL, INTEGER (i.e. Unix epoch), or NUMERIC - depending on the presentation of the date
+ 5. Column Types are Loose-descriptors, as they are NOT enforced across rows and may vary. Any type can be stored in any column, except if column is of type: 'INTEGER PRIMARY KEY' - This type auto-maintains 'rowid' - 64-bit signed
+
+Tasks:
+ 1. Generate & Manipulate Entries and Confirm 'rowid'
+  a. 'CREATE TABLE tbl_sites (id INTEGER PRIMARY KEY, site TEXT);'
+  b. 'INSERT INTO tbl_sites (site) VALUES ('site1');'
+  c. 'SELECT * FROM tbl_sites;'
+  d. 'SELECT rowid FROM tbl_sites;' or 'SELECT id FROM tbl_sites;'
+  e. 'SELECT site FROM tbl_sites;'
+  f. 'SELECT site, rowid FROM tbl_sites;'
+Column: 'id' is merely an alias to: 'rowid'
+ 2. Show the Schema
+  a. '.schema'
+  b. '.schema TABLE_NAME'
+ 3. Explore Manifest Typing - Insert various types (classes) into various columns
+  a. 'SELECT typeof(ROW_DATA) FROM TABLE;' - returns types of column: 'site' for each value stored
+   i.e. 'SELECT typeof(site) FROM tbl_sites;'
+  b. 'INSERT INTO tbl_sites (site) VALUES ('123');'
+     'SELECT typeof(site) FROM tbl_sites;'
+	 'INSERT INTO tbl_sites (site) VALUES ('12.14');'
+     'SELECT typeof(site) FROM tbl_sites;'
+Note: NUMERIC and REAL values are encompassed by: TEXT
+  c. Redefine table with new column and evaluate Manifest Typing
+   'DROP TABLE tbl_sites;'
+   'CREATE TABLE tbl_sites (id INTEGER PRIMARY KEY, site TEXT, site_value INTEGER);'
+  d. INSERT NEW JUNK
+   'INSERT INTO tbl_sites (site, site_value) VALUES ('site1', 1);'
+   'SELECT typeof(site_value) FROM tbl_sites;'
+   'INSERT INTO tbl_sites (site, site_value) VALUES ('site1', 1.1);'
+   'SELECT typeof(site_value) FROM tbl_sites;'
+   'INSERT INTO tbl_sites (site, site_value) VALUES ('site1', -1.1045);'
+   'SELECT typeof(site_value) FROM tbl_sites;'
+   'INSERT INTO tbl_sites (site, site_value) VALUES ('site1', "This is a text");'
+	'SELECT typeof(site_value) FROM tbl_sites;'
+Note: Manifest Typing provides various advantages, including, but not limited to:
+ a. Expedites data migration
+ b. Reduces time taken to move data accordingly: System --> Flat File --> SQLite
+ c. Varies resulting DB size because the included tables may vary on a per-record basis
+
+### Import / Export ###
+Features:
+ 1. Standard Binary format cross-platforms - facilitates prep on platform A for usage on platform B
+ 2. Automation | Portability
+ 3. Default configuration dumps data-set to STDOUT
+ 4. Default output mode is: 'list'
+
+Tasks:
+ 1. Export Table Data - Use various formats
+  a. '.output FILE_WITH_ANY_EXTENSION'
+   '.output tbl_sites.output'
+  b. Issue queries - Results in data-set being represented/stored in resultant file
+Note: Any subsequent command dumps to the dump on the file system rather than the STDOUT
+Note: The file will be truncated if it does exist
+.show -- give us some informations about the representation format
+  c. '.separator STRING' - to influence field separator
+  d. '.output stdout' (lowercase) - resets output to screen
+
+Different Modes:
+.help
+.mode MODE ?TABLE?     Set output mode where MODE is one of:
+                         ascii    Columns/rows delimited by 0x1F and 0x1E
+                         csv      Comma-separated values
+                         column   Left-aligned columns.  (See .width)
+                         html     HTML <table> code
+                         insert   SQL insert statements for TABLE
+i.e. .mode insert results
+SELECT * FROM my_table
+INSERT INTO results VALUES(1,'2012-09-24','MESSAGE 1');
+INSERT INTO results VALUES(2,'2012-09-24','MESSAGE 2');
+INSERT INTO results VALUES(3,'2012-09-24','MESSAGE 3');
+                         line     One value per line
+                         list     Values delimited by .separator strings
+                         tabs     Tab-separated values
+                         tcl      TCL list elements
+
+ 2. Import Flat-File Data
+  a. Create the file with desired field separator
+  b. '.import FILE TABLE' - imports data from Flat-File
+  c. Ensure that '.separator' matches data file
+i.e. '.separator colseparator rowseparator' - Use .show for confirmation
+  d. Transforms Delimiters Accordingly
+	 (You sed to substitute ; for | and do it globally)
+     'sed 's/|/;/g' import_data.1 > import_data.2'
+Note: Values within the rowid need to be unique; that is, your ids must be unique and not exist in any record in the table, and these ids need not to be in order or consequence.
+
+ 3. Export TO: MySQL
+	'sudo mysql'
+  a. Ensure target has DB and appropriate Table
+	'We can use '.schema' to copy the Create Table Statement
+    '.mode insert'
+    'SELECT * FROM TABLE_NAME'
+  b. Use 'mysql' client to setup target
+  c. '.mode insert tbl_sites' - sets 'sqlite3' to generate SQL INSERT statements
+  d. If data set is small, then copy and paste INSERT statements using GUI
+  e. set output file to contain INSERT statements then use 'mysql' to pump data via $SHELL
+   e1. 'cat tbl_sites.export.insert.statements.1 | mysql -h 192.168.75.102 -p test'
+  f. Dump SQLite data in SQL Syntax
+   i.e. 'sqlite3 DATABASE .dump'
+   i.e. 'sqlite3 DATABASE .dump | mysql -h 192.168.75.102 -p test'
+   i.e. 'mysql -p -h 192.168.75.102 -e 'select * from tbl_sites;''
+   i.e. 'mysqldump -p -h 192.168.75.102 test'
+   a. 'sqlite3 DB .dump' - generates SQL code - some cleanup may be necessary
+   b. Dump MySQL data to SQL Syntax for importation - may need cleanup
+    'mysqldump -p -h HOST -u USER DB [table] > FILE' - cleanup, then import with 'sqlite3'
+
+### SQLite - Miscellany ###
+Tasks:
+ 1. Open DB(s) on windows
+  'file test'
+Note: If you specified an INTEGER PRIMARY KEY in your table, then it is an alias to rowid. I not sqlite will automatically maintain a rowid.
+'ALTER TABLE TABLE_NAME ADD COLUMN COLUMN_NAME COLUMN_TYPE;'
+ 2. Create Table without: 'INDEX PRIMARY KEY'
+  a. 'CREATE TABLE tbl_junk (entry1 TEXT);'
+  b. 'SELECT rowid FROM tbl_junk;'
+ 3. Alter Table Definition - Add Column & Rename Table - Supported Functions
+  a. 'ALTER TABLE tbl_junk ADD COLUMN entry2 TEXT;'
+  b. 'ALTER TABLE tbl_junk ADD COLUMN entry3 TEXT;'
+  c. '.schema [TABLE]'
+ 4. Move 'text' SQLite3 DB back to Linux box
+ 5. Populate 'test' DB 'tbl_junk' with Junk
+  a. 'sqlite3 test .schema'
+  b. 'for i in `seq 1000`; do echo entry$i; done'
+     'for i in `seq 1000`; do sqlite3 test "INSERT INTO tbl_junk (entry1) VALUES (\"entry$i\");"; done'
+     'for i in `seq 1000`; do sqlite3 test "INSERT INTO tbl_junk (entry1) VALUES ($i);"; done
+  c. 'ls -l test' - examine DB size (in bytes)
+  d. dumps to res.txt
+     'sqlite3 test "SELECT * FROM tbl_junk;" > res.txt'
+  e. Current Size: '36864 bytes'
+     'DELETE FROM tbl_junk;' - removes records - truncates table
+      Current Size Post Table-Truncation: '36864 bytes'
+ 6. Use 'VACUUM' to Try to Reclaim File System Storage
+    VACUUM;
+    Current Size Post "VACUUM;": '16384 bytes'
+ 7. Examin 'rowid' Sans 'INTEGER PRIMARY KEY' field
+  a. Insert junk data
+  b. Examine 'rowid' - 'SELECT rowid, message FROM tbl_junk;'
+ 8. Views - Reduces presented tabular data to interesting columns
+  a. 'CREATE [TEMP] VIEW IF NOT EXISTS tbl_junk_view1 AS SELECT rowid, message2, message3 FROM tbl_junk;'
+Note: Unless 'temp[orary]' is used to define the VIEW, the VIEW will be a permanent artifact of your DB
+  b. 'SELECT * FROM tbl_junk_view1;' - returns VIEW-presented table
+  c. 'DROP VIEW IF EXISTS tbl_junk_view1;' - clobbers VIEW
+ 9. Attach | Detach DBs
+  a. 'ATTACH DATABASE FILE-PATH AS DB-NAME(Alias - cannot be called: 'main' or 'temp');'
+     '.quit'
+     'sqlite3 test2'
+     'CREATE TABLE tbl_junk_test_1 (entery1 TEXT);'
+     '.quit'
+     'for i in `seq 100`; do sqlite3 test2 "INSERT INTO tbl_junk_test_1 VALUES (\"This is entry $i\");"; done'
+     'sqlite3 test'
+     'ATTACH DATABASE test2 AS db2;'
+     '.databases'
+     '.schema'
+     'SELECT * FROM db2.tbl_junk_test_1;'
+   OR'SELECT * FROM tbl_junk_test_1;' - Case the names of tables are unique
+Note: Queries may now be executed against All attached DBs
+Note: If table names are NOT unique, you MUST qualify them with the DB prefix:
+i.e. 'SELECT * FROM db2.tbl_junk_test_1;' - Fully-Qualified Query: db.table
+  b. 'DETACH DATABASE ALIAS_NAME;'
+   'DETACH DATABASE db2;'
+   '.databases'
+
+### BASH $SHELL Script with SQLite ###
+Features:
+ 1. Simple data extraction from persistent tracking
+
+Tasks:
+ 1. Extract output from: 'uptime' dump and store within SQLite
+' 15:36:33 up 1 day, 19:06,  4 users,  load average: 0.62, 0.53, 0.52' - typical 'uptime' dump
+
+  a. Track current timestamp and message - results 2 VARs, which would result in 2 columns in the DB
+  b. 'sqlite3 sysStats "CREATE TABLE sysUptime (date date, message TEXT);"'
+  c. Capture data with BASH $SHELL
+   'date +%Y-%m-%d\ %H:%M:%S' Or 'date +"%Y-%m-%d %H:%M:%S"'
+   'CDATE=`date +"%Y-%m-%d %H:%M:%S"`'
+   'echo $CDATE'
+   'MESSAGE=`uptime | sed 's/^ //'`
+  d. Test INSERT prior to $SHELL Script Commit
+   'sqlite3 sysStats "INSERT INTO sysUptime VALUES (\"$CDATE\", \"$MESSAGE\");"'
+   'sqlite3 sysStats "SELECT * FROM sysUptime;"'
+   'which bash'
+   'ls -l *sh'
+   'chmod +x sysStats.sh' - Execute Permissions
+   'chmod 754 sysStats.sh' - Executable only for us
+   './sysStats.sh && echo $?' - echo $? echos the exit state (0 == no problem)
+ 2. Modify DB to auto-create TIMESTAMP
+  a. 'sqlite3 sysStats "DROP TABLE sysUptime; CREATE TABLE sysUptime (date date DEFAULT CURRENT_TIMESTAMP, message TEXT);"'
+   'history | grep INSERT'
+   'sqlite3 sysStats "INSERT INTO sysUptime (message) VALUES (\"$MESSAGE\");"'
+Note: SQLite Defaults to GMT time insertions
+
+ 3. Extend DB to support column for: one, five, fifteen minutes activity data
+  a. 'sqlite3 sysStats "ALTER TABLE sysUptime ADD COLUMN onMin REAL; ALTER TABLE sysUptime ADD COLUMN fiveMin REAL; ALTER TABLE sysUptime ADD COLUMN fifteenMin REAL;" && sqlite3 sysStats .schema'
+
+### Python Integration ###
+Features:
+ 1. Power of high-level scripting language
+ 2. Persistent storage via SQLite
+ 3. Requires: 'python-pysqlite2' package - SQLite3 interface
+
+Tasks:
+ 1. Explore Python's Interactive Interface before writing a simple script
+  a. Install Prerequisites
+    'dpkg -l | grep pysqlite2'
+    'sudo aptitude search pysqlite2'
+    'sudo aptitude install python-pysqlite2'
+    'which python'
+   b. Use interactive interface to talk to SQLite
+   c. 'import sqlite3' 'help(sqlite3)'
+
+help(sqlite3)
+
+PACKAGE CONTENTS
+    dbapi2
+    dump
+
+    class Connection(builtins.object)
+     |  SQLite database connection object.
+     |  
+     |  Methods defined here:
+     |  
+     |  __call__(self, /, *args, **kwargs)
+     |      Call self as a function.
+     |  
+     |  __enter__(...)
+     |      For context manager. Non-standard.
+     |  
+     |  __exit__(...)
+     |      For context manager. Non-standard.
+     |  
+     |  __init__(self, /, *args, **kwargs)
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  __new__(*args, **kwargs) from builtins.type
+     |      Create and return a new object.  See help(type) for accurate signature.
+     |  
+     |  close(...)
+     |      Closes the connection.
+     |  
+     |  commit(...)
+     |      Commit the current transaction.
+     |  
+     |  create_aggregate(...)
+     |      Creates a new aggregate. Non-standard.
+     |  
+     |  create_collation(...)
+     |      Creates a collation function. Non-standard.
+     |  
+     |  create_function(...)
+     |      Creates a new function. Non-standard.
+     |  
+     |  cursor(...)
+     |      Return a cursor for the connection.
+     |  
+     |  execute(...)
+     |      Executes a SQL statement. Non-standard.
+     |  
+     |  executemany(...)
+     |      Repeatedly executes a SQL statement. Non-standard.
+     |  
+     |  executescript(...)
+     |      Executes a multiple SQL statements at once. Non-standard.
+     |  
+     |  interrupt(...)
+     |      Abort any pending database operation. Non-standard.
+     |  
+     |  iterdump(...)
+     |      Returns iterator to the dump of the database in an SQL text format. Non-standard.
+     |  
+     |  rollback(...)
+     |      Roll back the current transaction.
+     |  
+     |  set_authorizer(...)
+     |      Sets authorizer callback. Non-standard.
+     |  
+     |  set_progress_handler(...)
+     |      Sets progress handler callback. Non-standard.
+     |  
+     |  set_trace_callback(...)
+     |      Sets a trace callback called for each SQL statement (passed as unicode). Non-standard.
+     |  
+     |  ----------------------------------------------------------------------
+    class Cursor(builtins.object)
+     |  SQLite database cursor class.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, /, *args, **kwargs)
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  __iter__(self, /)
+     |      Implement iter(self).
+     |  
+     |  __new__(*args, **kwargs) from builtins.type
+     |      Create and return a new object.  See help(type) for accurate signature.
+     |  
+     |  __next__(self, /)
+     |      Implement next(self).
+     |  
+     |  close(...)
+     |      Closes the cursor.
+     |  
+     |  execute(...)
+     |      Executes a SQL statement.
+     |  
+     |  executemany(...)
+     |      Repeatedly executes a SQL statement.
+     |  
+     |  executescript(...)
+     |      Executes a multiple SQL statements at once. Non-standard.
+     |  
+     |  fetchall(...)
+     |      Fetches all rows from the resultset.
+     |  
+     |  fetchmany(...)
+     |      Fetches several rows from the resultset.
+     |  
+     |  fetchone(...)
+     |      Fetches one row from the resultset.
+     |  
+     |  setinputsizes(...)
+     |      Required by DB-API. Does nothing in pysqlite.
+     |  
+     |  setoutputsize(...)
+     |      Required by DB-API. Does nothing in pysqlite.
+     |  
+     |  ----------------------------------------------------------------------
+
+
+   d. 'from sqlite3 import dbapi2'
+      'help(dbapi2)'
+
+help(dbapi2)
+
+FUNCTIONS
+    DateFromTicks(ticks)
+    
+    TimeFromTicks(ticks)
+    
+    TimestampFromTicks(ticks)
+    
+    adapt(...)
+        adapt(obj, protocol, alternate) -> adapt obj to given protocol. Non-standard.
+    
+    complete_statement(...)
+        complete_statement(sql)
+        
+        Checks if a string contains a complete SQL statement. Non-standard.
+    
+    connect(...)
+        connect(database[, timeout, detect_types, isolation_level,
+                check_same_thread, factory, cached_statements, uri])
+        
+        Opens a connection to the SQLite database file *database*. You can use
+        ":memory:" to open a database connection to a database that resides in
+        RAM instead of on disk.
+    
+    enable_callback_tracebacks(...)
+        enable_callback_tracebacks(flag)
+        
+        Enable or disable callback functions throwing errors to stderr.
+    
+    enable_shared_cache(...)
+        enable_shared_cache(do_enable)
+        
+        Enable or disable shared cache mode for the calling thread.
+        Experimental/Non-standard.
+
+    register_adapter(...)
+        register_adapter(type, callable)
+        
+        Registers an adapter with pysqlite's adapter registry. Non-standard.
+    
+    register_converter(...)
+        register_converter(typename, callable)
+        
+        Registers a converter with pysqlite. Non-standard.
+
+DATA
+    PARSE_COLNAMES = 2
+    PARSE_DECLTYPES = 1
+    SQLITE_ALTER_TABLE = 26
+    SQLITE_ANALYZE = 28
+    SQLITE_ATTACH = 24
+    SQLITE_CREATE_INDEX = 1
+    SQLITE_CREATE_TABLE = 2
+    SQLITE_CREATE_TEMP_INDEX = 3
+    SQLITE_CREATE_TEMP_TABLE = 4
+    SQLITE_CREATE_TEMP_TRIGGER = 5
+    SQLITE_CREATE_TEMP_VIEW = 6
+    SQLITE_CREATE_TRIGGER = 7
+    SQLITE_CREATE_VIEW = 8
+    SQLITE_DELETE = 9
+    SQLITE_DENY = 1
+    SQLITE_DETACH = 25
+    SQLITE_DROP_INDEX = 10
+    SQLITE_DROP_TABLE = 11
+    SQLITE_DROP_TEMP_INDEX = 12
+    SQLITE_DROP_TEMP_TABLE = 13
+    SQLITE_DROP_TEMP_TRIGGER = 14
+    SQLITE_DROP_TEMP_VIEW = 15
+    SQLITE_DROP_TRIGGER = 16
+    SQLITE_DROP_VIEW = 17
+    SQLITE_IGNORE = 2
+    SQLITE_INSERT = 18
+    SQLITE_OK = 0
+    SQLITE_PRAGMA = 19
+    SQLITE_READ = 20
+    SQLITE_REINDEX = 27
+    SQLITE_SELECT = 21
+    SQLITE_TRANSACTION = 22
+    SQLITE_UPDATE = 23
+    adapters = {(<class 'datetime.datetime'>, <class 'sqlite3.PrepareProto...
+    apilevel = '2.0'
+    converters = {'DATE': <function register_adapters_and_converters.<loca...
+    paramstyle = 'qmark'
+    sqlite_version = '3.13.0'
+    sqlite_version_info = (3, 13, 0)
+    threadsafety = 1
+    version = '2.6.0'
+    version_info = (2, 6, 0)
+   e. Open db instance
+    'connection1 = dbapi2.connect("test_python_sqlite")' - Opens DB instance
+    'file test_python_sqlite' - test_python_sqlite: empty
+    'c = connection1.cursor()' - creates cursor for DB navigation
+    'file test_python_sqlite' - test_python_sqlite: empty
+Note: c is our cursor which references connection1 which references an instance of dbapi2.conncet which references dbapi2 which pulled in from sqlite3
+    'c.execute(""" CREATE TABLE tbl_junk (temperature REAL); """)'
+    'file test_python_sqlite' - test_python_sqlite: SQLite 3.x database
+    'sqlite3 test_python_sqlite .schema' - CREATE TABLE tbl_junk (temperature REAL);
+    'c.execute(""" ALTER TABLE tbl_junk ADD COLUMN date date; """)'
+    'sqlite3 test_python_sqlite .schema'
+    'connection1.commit()' - commit changes to DB (Disk)
+Note: DDL commands are commited immediately; however, inserts, updates and deletes don't
+    'c.close()' - Closes the connection (DB) and releases any resources associated with the connection
+    'quit()' - quits python 

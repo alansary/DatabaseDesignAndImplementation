@@ -1,0 +1,9 @@
+Oracle
+======
+CREATE SEQUENCE seq_name
+MINVALUE minimum_value
+START WITH start_value
+INCREMENT BY increment_value;
+
+seq_name.nextval
+

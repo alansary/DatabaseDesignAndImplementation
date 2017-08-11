@@ -1,0 +1,3 @@
+SUBSTR('string_literal'/column_name, start_index, end_index); #inclusive
+%Starting by index 1
+

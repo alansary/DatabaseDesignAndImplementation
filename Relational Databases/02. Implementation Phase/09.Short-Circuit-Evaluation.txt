@@ -1,0 +1,9 @@
+-- Short Circuit Evaluation
+/*
+	- If we have multiple AND operators, start with the condition that
+	  is most likely be evaluated to FALSE. (Holds for SQL since it
+	  violates the over all condition, nothing to grap).
+	- If we have multipl OR operators, start with the condition that is
+	  most likely be evaluated to TRUE. (Doesn't hold for SQL since we
+	  grap results according to each condition).
+*/

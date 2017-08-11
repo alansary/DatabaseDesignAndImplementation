@@ -1,0 +1,2 @@
+LEFT('string_literal'/column_name, number_of_left_most_characters_returned);
+

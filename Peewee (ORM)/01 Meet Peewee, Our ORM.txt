@@ -1,0 +1,6 @@
+Object Relational Mapping (ORM)
+	It is a piece of software that turns objects in your code into rows in your database and vice
+	versa, we do this by defining a Model that represents a table in your database. Models which
+	would be classes have attributes which become the columns in the table. Every time we call save()
+	on a new instance of our class, we add a row to the table. A Model represents a single item in a database.
+pip install peewee

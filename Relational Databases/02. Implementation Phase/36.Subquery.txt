@@ -1,0 +1,7 @@
+SELECT col(s) FROM table_name WHERE col comparison-operator (subquery returns a single value);
+SELECT col(s), (subquery returns a single value);
+% Use a subquery when you want to query something based on unknown result
+
+SELECT * FROM employees WHERE hire_date = (SELECT hire_date FROM employees WHERE first_name = 'Mohamed' AND last_name = 'Alansary');
+SELECT * FROM employees WHERE salary < (SELECT MIN(salary) FROM employees WHERE jobs_id IN('ALGO_DES'));
+

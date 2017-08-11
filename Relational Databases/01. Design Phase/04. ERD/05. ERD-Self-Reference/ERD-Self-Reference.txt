@@ -1,0 +1,48 @@
+Self-reference Relationship
+===========================
+
+Example
+=======
+Employee Table
+EmpID is a primary key
+ManagerID is a foreign key references Employee (EmpID)
+- Each manager manages one or many employees
+- Each employee is managed by zero or one manager
+Strong Entity to Strong Entity (Weak Relationship)
+==============
+EmpID
+Emp_FirstName
+Emp_LastName
+ManagerID
+
+ManagerID|-0-------|<-EmpID
+
+- ManagerID referencing Employee (EmpID)
+- Employee (EmpID) is referenced by ManagerID
+
+Example
+=======
+Category Table
+CategoryID is a primary key
+Parent_CategoryID is a foreign key references Category (CategoryID)
+- Each parent category has zero or many categories
+- Each category belongs to zero or one parent category
+Strong Entity to Strong Entity (Weak Relationship)
+==============
+CategoryID
+CatName
+Parent_CategoryID
+
+Parent_CategoryID|-0---------0<-CategoryID
+
+CategoryID | CatName              | Parent_CategoryID
+1	   | Real Estate	  |
+2	   | Cars and Vehicles	  |
+3	   | Jobs		  |
+4	   | Accounting		  | 3
+5	   | Customer Service	  | 3
+6	   | IT			  | 3
+7	   | Software Development | 3
+8	   | Management		  | 3
+
+

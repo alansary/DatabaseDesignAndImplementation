@@ -1,0 +1,30 @@
+Extended One to One
+===================
+
+Post
+PostID is a primary key
+--------------------------------------------------
+PostID | Title | Desc | PostDate       | Post Type
+99975  | title1| Desc1| 1 Dec, 2014    | Pro
+66577  | title2| Desc2| 10 June, 2015  | Premium
+88822  | title3| Desc3| 12 April, 2014 | Pro
+33354  | title4| Desc4| 10 Mars, 2015  | Premium
+44444  | title5| Desc5| 1 Feb, 2014    | Free
+--------------------------------------------------
+ProPost
+PostID is a primary key
+PostID is a foreign key reperences Post (PostID)
+-----------------------
+PostID | ImageFileName
+99975  | game_cover.jpg
+88822  | toys.png
+-----------------------
+PremiumPost
+PostID is a primary key
+PostID is a foreign key references Post (PostID)
+----------------------
+PostID | VideoFileName
+66577  | live_demo.mpg
+33354  | show_time.mov
+----------------------
+

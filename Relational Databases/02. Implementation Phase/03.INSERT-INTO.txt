@@ -1,0 +1,21 @@
+/*
+INSERT INTO table_name (cols-tuple)
+    VALUES (cols-tuple);
+*/
+CREATE TABLE Customer (
+    CustomerID INTEGER NOT NULL,
+    FirstName VARCHAR(20) NOT NULL,
+    LastName VARCHAR(10) NOT NULL,
+    Age INTEGER NULL,
+    PRIMARY KEY (CustomerID)
+);
+
+INSERT INTO Customer (CustomerID, FirstName, LastName, Age)
+    VALUES (1, 'Mohamed', 'Alansary', 23);
+INSERT INTO Customer (CustomerID, FirstName, LastName)
+    VALUES (2, 'Mahmoud', 'Taha');
+INSERT INTO Customer VALUES (3, 'Nour', 'Eldien', 24);
+INSERT INTO Customer (LastName, CustomerID, FirstName)
+    VALUES ('Salah', 4, 'Mohamed');
+SELECT * FROM Customer;
+

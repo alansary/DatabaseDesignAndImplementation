@@ -1,0 +1,12 @@
+SELECT COALESCE(col1, col2, ..., coln, val1, val2, ..., valn);
+COALESCE -> The first non-NULL value from col1, col2, ..., coln, val1, val2, ..., valn
+
+SELECT COUNT(*) FROM employees;
+SELECT COUNT(commission_pct) FROM employees;
+SELECT COUNT(COALESCE(commission_pct, 0)) FROM employees;
+
+Oracle
+======
+SELECT NVL(col, val);
+NVL -> val if col is NULL
+

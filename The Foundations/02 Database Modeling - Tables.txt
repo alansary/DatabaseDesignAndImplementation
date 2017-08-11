@@ -1,0 +1,26 @@
+Database Schema
+	(1) What's the point ?
+	(2) What do you have already ?
+	(3) What entities do you have ?
+	(4) What are the relationships between those entities ? E-R Diagram (Entity-Relationship Diagram)
+	(5) Entities and Attributes ? E-R Diagram (Entity-Relationship Diagram)
+		Attributes is a characteristic of data, a real-world data feature that is modeled in the database,
+		its informal terms are column in a table of field in a data file.
+	(6) What kind of data is going to be stored in each of these columns ?
+		Domain is a set of atomic values that are all of the same datatype. This domain gives the possible
+		values for the attribute.
+	(7) Optionality.
+		NULL: Is the complete absance of a value.
+	(8) Specify a default value for a column if any.
+	(9) Primaray Key
+		Candidate Keys (unique keys) are unique identifiers for the tuples (its informal terms are row in a table or record in a data file) of a relation (its informal term is the table). If a relation has more than one candidate key, the one that choosen to represent the relation is called the primary key, and the remaining candidate keys are called alternate keys.
+		Primary Key is naturall or surrogate (artificial) or composite key.
+			natural primary key
+				happened naturally in the database.
+			surrogate (artificial) primary key
+				defined by you, have no meaning to real-world data. Usually is INT and Auto Incremented.
+			composite key
+				One value doesn't uniquely identify a row but more than one do. If we combine these columns we will create a unique primary key.
+		Primary Key is a unique identifier of the relation tuples, it provides a way to uniquely identify each tuple of the relation. It must be unique and not NULL for all the tuples.
+	Foreign Key
+		Is an attribute (or attribute combination) in one relation R2 whose values are required to match those of the primary key of some relation R1 (R1 and R2 not necessarily distinct), used to represent certain relationships between tuples.

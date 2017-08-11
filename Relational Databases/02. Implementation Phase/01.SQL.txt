@@ -1,0 +1,34 @@
+What is SQL?
+Structured Query Language (SQL) is a collection of keywords to control/
+handle data in a database.
+
+What does query mean?
+It means requesting or inquiring something, so basically we use the
+collection of keywords (commands) to request data from databases and
+these keywords have to be written in a specific and structured way. Hence,
+the abbreviation SQL has the term "Structured".
+
+Procedural vs. Descriptive languages:
+  - Procedural languages like C specifies what data is requested and how
+    to get those data.
+  - Descriptive languages like SQL specifies what data is requested without
+    even caring about how to get those data.
+
+What is the definition of a language?
+The Set of strings over the alphabet of the language. It consists of the use
+of words in a structured and conventional way. It has a specific syntax and
+semantics.
+
+A list of SQL Commands
+======================
+CREATE, ALTER, DROP, TRUNCATE, COMMENT, RENAME, SELECT, INSERT, UPDATE,
+DELETE, COMMIT, SET TRANSACTION, MERGE, CALL, EXPLAIN PLAN, LOCK TABLE,
+GRANT, REVOKE, SAVEPOINT, ROLLBACK
+
+Classification of SQL Commands
+==============================
+ - Data Definition Language (DDL)
+ - Data Manipulation Language (DML)
+ - Data Control Language (DCL)
+ - Transaction Control Language (TCL)
+

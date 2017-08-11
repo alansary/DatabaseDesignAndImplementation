@@ -1,0 +1,18 @@
+-- String Functions
+/*
+UPPER(string-col/'string')
+LOWER(string-col/'string')
+LENGTH(string-col/'string')
+*/
+SELECT UPPER(FirstName) AS 'First Name',
+    LOWER(LastName) AS 'Last Name',
+    LENGTH(FirstName) + LENGTH(LastName)  + LENGTH(' ') AS
+    'Full Name Length' FROM customer;
+INSERT INTO Customer VALUES (5, 'IBRAHIM', 'MOHSEN', 22);
+SELECT * FROM Customer;
+SELECT * FROM Customer WHERE UPPER(FirstName) = UPPER('ibrahim');
+SELECT * FROM Customer WHERE LOWER(FirstName) = LOWER('MOHAMED');
+SELECT UPPER(FirstName), LOWER(LastName) FROM Customer;
+SELECT * FROM Customer WHERE LENGTH(FirstName) = 4;
+SELECT * FROM customer WHERE LENGTH(FirstName) < LENGTH(LastName);
+

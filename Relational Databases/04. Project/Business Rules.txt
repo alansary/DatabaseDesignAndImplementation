@@ -1,0 +1,24 @@
+Business Rules
+==============
+	teaches is a junction table
+	instructor teaches zero or many section
+	section is teached by one or many instructor
+	section has zero or one classroom
+	classroom has zero or many section
+	advisor is a junction table
+	the instructor is an advisor to zero or many student
+	the student has zero or many advisor (instructor)
+	instructor is an instructor in zero or one department
+	department has zero or many instructor
+	department has zero or many student
+	student is a student in zero or one department
+	department has zero or one course
+	course is in a zero or one department
+	takes is a junction table
+	student takes one or many section
+	section has one or many student
+	one course has zero or many prereq
+	one prereq is a prereq for zero or many course
+	one section has zero or one time_slot
+	one time_slot has one and only one section
+

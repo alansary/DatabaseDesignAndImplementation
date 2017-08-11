@@ -1,0 +1,38 @@
+One to One
+==========
+
+ - Each Customer record must have one and only one Customer_Private_Details
+   record |-|
+ - Each Customer_Private_Details record must have one and only one Customer
+   record |-|
+
+Customer Table
+CustomerID is a primary key
+==============
+CustomerID
+FirstName
+LastName
+CreditCardNumber
+Username
+Password
+
+Customer Table
+CustomerID is a primary key
+Strong Entity
+==============
+CustomerID
+FirstName
+LastName
+
+Customer_Private_Details Table
+CustomerID is a foreign key referencing Customer (CustomerID)
+CustomerID is a primary key
+Weak Entity
+==================
+CustomerID
+Username
+CreditCardNumber
+Password
+
+Customer|-|__________|-|Customer_Private_Details
+

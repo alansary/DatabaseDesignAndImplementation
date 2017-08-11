@@ -1,0 +1,9 @@
+Oracle
+======
+	SELECT datatype(s) FROM col1
+	INTERSECT
+	SELECT datatype(s) FROM col2;
+	SELECT datatype(s) FROM col1
+	MINUS
+	SELECT datatype(s) FROM col2;
+

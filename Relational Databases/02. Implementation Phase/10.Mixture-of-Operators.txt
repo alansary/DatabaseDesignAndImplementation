@@ -1,0 +1,4 @@
+-- Mixture of Operators
+SELECT * FROM Customer WHERE (FirstName = 'Mohamed' AND NOT Age IS NULL)
+    OR (LastName = 'Taha') OR (FirstName = 'Nour' AND Age > 23);
+

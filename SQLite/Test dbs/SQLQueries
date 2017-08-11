@@ -1,0 +1,7 @@
+CREATE TABLE data (id INTEGER PRIMARY KEY, fName TEXT, lName TEXT, phoneNum INTEGER);
+CREATE TABLE data2 (entery1 TEXT, entry2 TEXT, entry3 TEXT);
+INSERT INTO data VALUES(1,'Mohamed','Alansary',1207395400);
+INSERT INTO data VALUES(2,'Mahmoud','Taha',1274100150);
+INSERT INTO data VALUES(3,'''x''','''y''',0);
+INSERT INTO data VALUES(4,'''ent1''','''ent2''',1);
+INSERT INTO data2 VALUES('x','y','z');

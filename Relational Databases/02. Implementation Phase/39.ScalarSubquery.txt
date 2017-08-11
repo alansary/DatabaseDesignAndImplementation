@@ -1,0 +1,18 @@
+SELECT * FROM job_grades;
+SELECT first_name, last_name, salary,
+    CASE
+	WHEN salary >= 1000 AND salary <= 2999 THEN 'A'
+	WHEN salary >= 3000 AND salary <= 5999 THEN 'B'
+	WHEN salary >= 6000 AND salary <= 9999 THEN 'C'
+	WHEN salary >= 10000 AND salary <= 14999 THEN 'D'
+	WHEN salary >= 15000 AND salary <= 24999 THEN 'E'
+	WHEN salary >= 25000 AND salary <= 40000 THEN 'F'
+	ELSE 'Unknown Salary Grade'
+    END AS 'Salary Grade'
+    FROM employees;
+SELECT first_name, last_name, salary,
+    (
+	SELECT grade FROM job_grades WHERE employees.salary BETWEEN lowest_sal AND highest_sal
+    ) AS 'Grade'
+    FROM employees;
+

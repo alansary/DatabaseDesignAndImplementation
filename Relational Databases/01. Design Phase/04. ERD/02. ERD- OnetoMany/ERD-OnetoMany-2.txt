@@ -1,0 +1,40 @@
+Dept Code | Dept Name
+FIN	  | Finance
+HR	  | Human Resources
+IT	  | Information Technology
+RES	  | Research and Development
+
+Emp ID | Emp Fname | Emp Lname | Dept Code
+100    | Michael   | Philips   | FIN
+200    | Sara      | Norman    | HR
+300    | Paul      | McMahen   | FIN
+400    | Michael   | Philips   | FIN
+500    | Chris     | Jacob     | IT
+600    | Omar      | Maisam    | RES
+700    | Johnathon | Don       | HR
+
+One to Many
+===========
+  - A department has zero or many employees 0<-
+  - An employee belongs to one and only one department |-|
+
+Department|-|---------0<-Employee
+
+- Each employee must belong to one department because the minimum
+  cardinality is one. If the minimum cardinality was "zero or one", then
+  it is not mandatory for an employee to belong to a department.
+
+One to Many
+===========
+ - A professor teaches one or many courses |<-
+ - A course is run by zero or one professor |-0
+
+Professor|-0----------|<-Course
+
+- Listen carefully to the business requirements. Business requirements are
+  usually given casually by the client and later on you will have to put
+  these requirements in clear sentences so you can design the database
+  properly.
+- Based on the business requirement, we come up with two well-defined clear
+  sentences that would help us with the database design.
+

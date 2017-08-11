@@ -1,0 +1,4 @@
+SELECT col1, ..., coln FROM table_contains_fk, table_contains_pk WHERE table_contains_fk.fk = table_contains_pk.pk;
+SELECT col1, ..., coln FROM table_contains_fk NATURAL JOIN table_contains_pk< WHERE table_contains_fk.fk = table_contains_pk.pk>;
+SELECT col1, ..., coln FROM table_contains_fk INNER JOIN table_contains_pk ON table_contains_fk.fk = table_contains_pk.pk;
+

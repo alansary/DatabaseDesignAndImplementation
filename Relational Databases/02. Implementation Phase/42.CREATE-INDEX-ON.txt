@@ -1,0 +1,15 @@
+CREATE INDEX idx_name_table
+    ON table_name(column_name);
+-- PRIMARY KEYS are indexed by default.
+Oracle
+======
+DROP INDEX idx_name_table;
+
+
+    Index = A quick lookup table for finding things you need to search for
+            frequently. Indexes are fast because they don't have to carry
+            all the data of a row in the table. Primary key is an index by
+            default. You can use an additional INDEX using INDEX(col_name)
+            in your table definition. Use INDEX whenever you want to use
+            it in JOIN frequently.
+

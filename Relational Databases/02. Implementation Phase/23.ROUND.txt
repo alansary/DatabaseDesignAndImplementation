@@ -1,0 +1,6 @@
+SELECT ROUND(float, precision);
+SELECT AVG(salary), ROUND(AVG(salary), 2) FROM employees;
+Oracle
+======
+	SELECT TRUNC(float, precision);
+

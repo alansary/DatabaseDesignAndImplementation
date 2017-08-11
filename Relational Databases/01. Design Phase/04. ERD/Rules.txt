@@ -1,0 +1,15 @@
+- Whenever you represent a relationship between two strong entities, use
+  dashed lines, otherwise, use solid lines.
+- The dashed line between strong entities represen weak relationship, each
+  of the strong tables is stand-alone table, they are independent, dropping
+  any one of them will end the relationship immediately (One to Many).
+- The solid line between a strong entity and a weak entity represent a
+  strong relationship, the weak entity can not stand by it self, if we
+  dropped the strong entity, there is no need for the weak entity any more.
+  The relationship here is strong because the weak entity is strongly
+  dependen on the strong entity.
+
+- Strong Entity ----------- Strong Entity
+- Weak Entity ___________ Strong Entity
+
+

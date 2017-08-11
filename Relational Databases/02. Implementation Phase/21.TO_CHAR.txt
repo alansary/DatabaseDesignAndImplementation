@@ -1,0 +1,7 @@
+Oracle
+======
+SELECT SYSDATE FROM DUAL;
+SELECT TO_CHAR(date, 'YYYY-MM-DD');
+SELECT TO_CHAR(date, 'YYYY-MON-DD');
+SELECT TO_CHAR(float, '$99,999.00');
+

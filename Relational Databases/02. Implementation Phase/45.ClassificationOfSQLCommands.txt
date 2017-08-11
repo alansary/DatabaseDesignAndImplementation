@@ -1,0 +1,25 @@
+Data Definition Language (DDL)
+    CREATE
+    ALTER
+    DROP
+    TRUNCATE
+    COMMENT
+    RENAME
+Data Manipulation Language (DML)
+    SELECT
+    INSERT
+    UPDATE
+    DELETE
+    MERGE
+    CALL
+    EXPLAIN PLAN
+    LOCK TABLE
+Data Control Language (DCL)
+    GRANT
+    REVOKE
+Transaction Control Language (TCL)
+    COMMIT
+    SAVEPOINT
+    ROLLBACK
+    SET TRANSACTION
+

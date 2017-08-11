@@ -1,0 +1,6 @@
+Oracle
+======
+SELECT * FROM ALL_OBJECTS WHERE owner = 'HR';
+SELECT * FROM ALL_OBJECTS WHERE owner = 'HR' AND object_type = 'TABLE';
+SELECT * FROM user_constraints WHERE table_name = 'EMPLOYEES';
+

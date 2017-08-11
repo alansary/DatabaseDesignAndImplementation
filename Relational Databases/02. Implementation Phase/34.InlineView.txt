@@ -1,0 +1,8 @@
+Oracle
+======
+SELECT col(s) FROM
+(
+    <SELECT query represents inline view>
+)
+WHERE cond(s);
+

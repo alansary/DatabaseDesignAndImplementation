@@ -1,0 +1,16 @@
+SELECT col(s) FROM outer_table WHERE EXISTS(SELECT col(s) FROM inner_table WHERE col = outer_table.col);
+%EXISTS(correlated_subquery)
+SELECT col(s) FROM outer_table WHERE NOT EXISTS(SELECT col(s) FROM inner_table WHERE col = outer_table.col);
+%NOT EXISTS(correlated_subquery)
+
+SELECT * FROM employees WHERE EXISTS(SELECT * FROM job_history WHERE employees_id = employees.employees_id);
+SELECT first_name, last_name FROM employees WHERE EXISTS(SELECT first_name, last_name FROM job_history WHERE employees_id = employees.employees_id);
+SELECT * FROM employees WHERE EXISTS(SELECT * FROM job_history WHERE job_history.employees_id = employees.employees_id);
+ELECT * FROM jobs WHERE NOT EXISTS(SELECT * FROM employees WHERE employees.jobs_id = jobs.jobs_id);
+
+%Same effect can be obtained by
+SELECT * FROM employees WHERE employees_id IN(SELECT employees_id FROM job_history GROUP BY employees_id);
+SELECT * FROM employees WHERE employees_id IN(SELECT employees_id FROM job_history);
+SELECT * FROM employees WHERE employees_id IN(SELECT DISTINCT employees_id FROM job_history);
+SELECT * FROM employees WHERE employees_id NOT IN(SELECT DISTINCT employees_id FROM job_history);
+

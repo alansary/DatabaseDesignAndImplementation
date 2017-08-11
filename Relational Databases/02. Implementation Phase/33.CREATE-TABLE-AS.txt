@@ -1,0 +1,10 @@
+CREATE TABLE table_name AS
+	<SELECT query>;
+
+CREATE TABLE test AS
+SELECT first_name, last_name FROM archive1
+UNION
+SELECT first_name, last_name FROM archive2;
+
+DROP TABLE test;
+

@@ -1,0 +1,22 @@
+SELECT data_type1, ..., data_typen FROM table1
+UNION ALL
+SELECT data_type1, ..., data_typen FROM table2
+UNION ALL
+...
+SELECT data_type1, ..., data_typen FROM tablen;
+  -- UNION ALL doesn't remove duplicates
+  -- UNION removes duplicates
+% Note that: you can replace any data_type with NULL
+
+SELECT * FROM archive1
+UNION ALL
+SELECT * FROM archive2
+UNION ALL
+SELECT * FROM archive3;
+
+SELECT * FROM archive1
+UNION
+SELECT * FROM archive2
+UNION
+SELECT * FROM archive3;
+

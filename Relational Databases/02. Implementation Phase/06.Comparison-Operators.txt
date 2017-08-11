@@ -1,0 +1,14 @@
+-- Comparison Operators
+-- > >= < <= = != <> IS NULL IS NOT NULL
+SELECT * FROM Customer WHERE Age > 23;
+SELECT * FROM Customer WHERE Age >= 23;
+SELECT * FROM Customer WHERE Age < 24;
+SELECT * FROM Customer WHERE Age <= 24;
+SELECT * FROM Customer WHERE FirstName = 'Mohamed';
+SELECT * FROM Customer WHERE Age != 23; -- Execludes NULL
+SELECT * FROM Customer WHERE Age <> 23; -- Execludes NULL
+SELECT * FROM Customer WHERE Age IS NULL;
+SELECT * FROM Customer WHERE Age IS NOT NULL;
+-- Oracle
+    -- Any comparison with NULL returns UNKNOWN.
+

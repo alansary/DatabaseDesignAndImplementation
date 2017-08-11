@@ -1,0 +1,10 @@
+Boyce-Codd Normal Form (BCNF)
+=============================
+    For each candidate key, all non-key attributes must be fully dependent
+    on the entire candidate key; that is, the second normal form is applied
+    not only for the primary key (the choosen key from the candidate keys)
+    but also for all other candidate keys.
+    - All non-key attributes are fully dependent on each candidate key.
+    - If the table is not in BCNF, you will decompose the table and put
+    those columns that don't depend on the candidate key in another table.
+

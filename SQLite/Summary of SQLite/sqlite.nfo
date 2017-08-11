@@ -1,0 +1,68 @@
+Focus: SQLite RDBMS Administration 
+Duration: 4 Hours
+
+Course Objective
+Intro to SQLite - RDBMS - Usage - Administration
+
+Introduction - SQLite - Features
+Discuss features and benefits
+Identify installation footprint
+Contrast SQLite with Client | Server RDBMSs
+Discuss pros and cons of facility
+Explore environment
+ 
+SQLite Terminal Monitor Client
+Pinpoint key invocation options
+Enter SQLite Terminal Monitor
+Contrast with MySQL Terminal Monitor
+Expose RDBMS structure
+Explore default schema
+Create sample DBs with sample Table structures
+Use various terminal features accordingly
+Evaluate results
+ 
+Data Types | Manifest Typing
+Discuss features and benefits
+Implement various Redirects
+Trace behavior in appropriate logs
+Contrast Redirects and other forms of URL Handling
+ 
+Data Transportation
+Highlight useful features
+Consider transportation scenarios
+Export data to a variety of formats
+Import data from various sources
+Ensure target DBMS configuration
+Dump to MySQL and evaluate
+Import from MySQL accordingly
+Consider implications of pure SQL transports
+ 
+SQLite - Bits and Bobs - Miscellany
+Examine cross-platform operability
+Compounded Queries
+Table auto-incrementation considerations
+Alter Table support
+Table populations via $SHELL
+File System space reclamation with SQL VACUUM
+Witness SQL VIEWS support
+Attach | Detach databases
+Perform appropriate queries against sources
+ 
+BASH $SHELL - SQLite Support
+Discuss applicabilitiy
+Generate DB and Table-space
+Test manual data-captures
+Author script with appropriate trappings
+Alter Table space accordingly to reflect hypothetical shifts
+Parse useful system data
+Automate procedure
+ 
+Python - SQLite - Integration
+Consider features
+Discuss sample usage scenarios
+Review Python Interactive Mode
+Generate sample connection string blocks
+Test Python-SQLite connectivity
+Automate data collection with Python | SQLite
+Debug as needed
+Evaluate results

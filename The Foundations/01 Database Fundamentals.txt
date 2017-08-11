@@ -1,0 +1,21 @@
+Primary Key
+	Is the way to identify just one particular row in any table, this primary key is unique.
+Relationships
+	One To One
+	One To Many
+	Many To Many
+Transactions and the ACID test
+	Transaction is defined as a compound unit of work, either all happens or neither of them do.
+	The previous changes would be reversed by the database if any part of the transaction fails.
+	A transaction must be:
+		Atomic: Completely happens or not at all (All or nothing rule).
+		Consistent: Take the database from one valid state to another valid state based on the rules of the database.
+		Isolated: Lock the data until the transaction is correct.
+		Durable: If the transaction is initiated and then something bad happens, this transaction must occur after the problem has been fixed.
+Structured Query Language (SQL)
+	SQL is a common language that every RDBMS use. It is a declarative query language not a procedural language.
+	SQL can be used to:
+		Create Read Update and Delete (CRUD Application)
+	SQL is divided into two parts:
+		DDL (Data Definition Language)
+		DML (Data Manipulation Language)

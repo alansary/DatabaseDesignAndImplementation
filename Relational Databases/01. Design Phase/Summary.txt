@@ -1,0 +1,236 @@
+First Normal Form (1NF)
+=======================
+  I. Eliminate Multi-value
+  ========================
+   - Any indefinite multi-value column should be taken out of the table.
+   - Apply multi-value on definite fields only.
+   - Eliminate multi-value fields could mean the following:
+     1. Break the multi-value into multiple fields.
+     2. Remove the multi-value field totally as if it never existed in
+        the table.
+  II. Assign Primary Key
+  ======================
+  Super-Keys
+    Uniquely identifies each row in the table.
+  Candidate-Keys
+    Uniquely identifies each row in the table.
+    Do not have NULL values.
+    Minimal (irreducable).
+  Primary-Key
+    Uniquely identifies each row in the table. (Mandatory)
+    Does not have NULL values. (Mandatory)
+    Minimal (irreducable). (Mandatory)
+    Does not change over time. (Mandatory)
+    Simple primary key (not composite). (Optional)
+    Numeric value. (Optional)
+    Does not expose confidential information. (Optional)
+    Easy to remember. (Optional)
+  Alternative-Keys (Secondary-Keys)
+
+   Simple Key vs. Composite Key
+   ----------------------------
+   - Any key consists of a single column is called "Simple Key" and any
+     key with multiple columns is called "Composite Key". Simple Key is
+     always preferred to be set as Primary Key.
+
+   Surrogate Key vs. Natural Key
+   -----------------------------
+   - A surrogate/artificial key is a column with artificially auto-generated
+     value. A natural/business key is a key that is formed of attributes
+     that already exist in the real world.
+
+  III- Eliminate Repeating Group
+  ==============================
+   1- Determine columns that cause repeating groups.
+   2- Assing a Primary Key to the table.
+      Execlude columns that causes a repeating group.
+   3. Assign a Primary Key for the repeating group columns.
+   - Now we have the two primary keys as a composite primary key for this
+     table.
+
+    Entity Integrity
+    ----------------
+    Entity Integrity ensures each record in each table of a database can be
+    specifically identified via the primary key. This prevents duplicate
+    records and other issues that would indirectly compromise the integrity
+    of the database. In the absance of entity integrity, the entites in a
+    database can accidentally overlap.
+
+    Note
+    ----
+    The repeating group is not removed from the table yet.
+
+Second Normal Form (2NF)
+========================
+  Remove Partial Dependency
+    - All non-key attributes are fully dependent on the entire primary key
+    - Break the table into smaller tables such that for each table, this
+      table contains attributes that are fully dependent on its primary key.
+
+Third Normal Form (3NF)
+=======================
+  Remove Transitive Dependencies
+    - Ensure all non-keys are fully dependent on the PK, No non-key should
+      depend on another non-key.
+      - Remove calculated columns.
+
+One to Many Relationships
+=========================
+  1- Determine the primary key of each table.
+  2- One of these tables should have a copy of the primary key of the
+     other table (as a foreign key).
+     - More percisely, the table at the Many side of the relation should
+       contain the primary key of the table on the One side of the
+       relation as a foriegn key.
+
+  Referential Integrity
+  ---------------------
+  We can not assign a value for a foreign key unless this value exists
+  as a primary key.
+
+Many to Many Relationships
+==========================
+  1- Identify the primary key of each table.
+  2- Create the junction/linking/weak/associative table which is a table
+     that contain the primary keys of the two tables as foreign keys. Also
+     we assign the two foreign keys as a composite primary key to enforce
+     entity integrity over the junciton table.
+
+  Strong Entity vs. Weak Entity
+  -----------------------------
+  A strong entity stands alone, but a weak entity borrows its primary key
+  from another table, removing the table it borrows its primary key from
+  will make this table vaniches. This borrowed primary key is borrowed as
+  a foreign key and assigned as primary key as well.
+
+  - Can we add a new column to the junction table?
+    Defenitely yes, as long as it depends on the entire primary key.
+
+One to One Relationships
+========================
+
+  Sensitive and Insensitive Attributes
+  ------------------------------------
+  - You can apply One to One relationship on a table that have sensitive and
+    in-sensitive attributes.We broke down the table into two tables, one has
+    all sensitive attributes and the other has all in-sensitive attributes.
+  - To build the relationship between the two tables we send the primary key
+    resides in the table that contain all in-sensitive attributes to the
+    table that contain all sensitive attributes as a foreign key.
+  - So, we assign the foreign key as both foreign key references the other
+    table primary key and also we assign it as a primary key for this table.
+  - The table that has all in-sensitive data is a strong entity but the
+    table that has all sensitive data is a weak entity.
+  - You must insert first into the table that contains the insensitive data,
+    then you insert into the table that contains sensitive data.
+    (Referential Integrity)
+
+  Eliminate Indefinite Multi-value in 1NF
+  ---------------------------------------
+  - We also need One to One relationship when dealing with (Multi-value
+    indefinite attributes which we through away from the table in 1NF).
+
+Self-Reference Relationship (Unary Relationship)
+================================================
+  - When you have bunch of data that come in a hirarichal structure, this is
+    a good indication that you need a self-reference relationship.
+  - To build the relationship between the hirarichal data, we will create
+    a foreign key in the table that references the primary key of the same
+    table and name it anything else to remove confusion.
+
+Extended 1 to 1 Relationship
+============================
+  - Used when we have to (Eliminate Indefinite Multi-value) with consistent
+    alternating behavior.
+  - Consistent alternating columns means consistent pattern of gaps between
+    set of columns.
+  - We through out the Multi-value attributes out of the table, then we
+    create a table for each of them, each sub-type table contains the PK of
+    the super-type table as a foreign key as well as a primary key.
+  - Note that the main table is called super-type table and all other tables
+    are called sub-type tables.
+  - The super-type table is generalized and all sub-type tables are
+    specialized.
+  - What we mean by specialized tables is that we can add an attribute or
+    feature that belongs to some of them regardless of the others.
+  - All sub-type tables are weak entites and the super-type table is a
+    strong entity if we dropped it, there is no meaning for any of the
+    sub-type tables. The sub-type tables are weak entites because they
+    borrow their primary key from the super type table.
+  - To determine the type of the sub-type from the super-type table without
+    looking for it in all sub-type tables, we simply add a new column in the
+    super-type table called Subtype Discriminator that is assigned the value
+    of the sub-type.
+
+Note
+====
+  Ignoring One to Many and Many to Many relationships will cause critical
+  problems, however, ignoring One to One and Extended One to One
+  relationships does not, it is optional to create One to One and Extended
+  One to One relationships.
+
+  Whenever you found a need for One to One or Extended One to One
+  relationship, you can choose as follows:
+   - Break up the table and apply the relationship.
+   - Leave the table as it is, it is not mandatory.
+   - Use views to achieve the same result as applying the relationship.
+
+ERD
+===
+  Cardinality
+  -----------
+  Each cardinality has minimum value (minimum cardinality) and maximum value
+  (maximum cardinality).
+  The minimum is always the outside and the maximum is always the inside.
+  The inside part of the cardinality is the part that touches the table.
+
+   - The straight line represents one.
+   - The circle represents zero.
+   - The three straight lines represent many.
+
+  One or Many (X-----|<-Y)
+  ------------------------
+  |<- means X must have at least 1 Y (represented by the line |) and maximum
+  is many
+
+  One and only One (X|-|-----Y)
+  -----------------------------
+  |-| means Y must have One and only One X (minimum value is 1 and maximum
+  value is 1)
+
+  Zero or Many (X-------0<-Y)
+  ---------------------------
+  0<- means X can have zero or many Y (minimum value is 0 and maximum value
+  is many)
+
+  Zero or One (X|-0--------Y)
+  ---------------------------
+  |-0 means Y can have zero or many X (minimum value is 0 and maximum value
+  is many)
+
+  Completness Constraint
+  ----------------------
+    Partial Completness
+    -------------------
+    Tells us that it is not necessary for the super-type table to have a
+    record in any sub-type table, you could have a record in the super-type
+    table without a record in any sub-type table. That is, it is optional
+    for the supertype to have a record in any of the subtypes.
+
+    Total Completness
+    -----------------
+    Tells us that for every record in the super-type table, we must have a
+    record in any of the sub-type tables. That is, it is mandatory for the
+    supertype to have a subtype.
+
+    The letter 'd'
+    --------------
+    'd' stands for Disjoint Subtypes/Nonoverlapping Subtypes; that is, it is
+    Optional/Mandatory for a record in the supertype to have a record in a
+    subtype but in one and only one subtype.
+
+    The letter 'o'
+    --------------
+    'o' stands for Overlapping Subtypes; that is, it is Optional/Mandatory
+    for a record in the supertype to have a record in more than one subtype.
+

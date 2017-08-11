@@ -1,0 +1,17 @@
+SELECT table_name.col_name, ...
+    FROM table_contain_fk INNER JOIN table_contain_pk
+    ON table_contain_fk.fk = table_contain_pk.pk;
+
+SELECT alias1.col_name, alias2.col_name, ...
+    FROM table_contain_fk AS alias1 INNER JOIN table_contain_pk AS alias2
+    ON alias1.fk = alias2.pk
+    WHERE condition(s)
+    ORDER BY alias.col, ...
+    ;
+
+SELECT CONCAT(emps.first_name, ' ', emps.last_name) AS 'Employee Name', CONCAT(mng.first_name, ' ', mng.last_name) AS 'Manager Name',
+    deps.departments_name AS 'Department', jbs.jobs_title AS 'Job Title' FROM
+    employees AS emps INNER JOIN employees AS mng INNER JOIN departments AS deps INNER JOIN jobs AS jbs ON
+    emps.manager_id = mng.employees_id AND emps.departments_id = deps.departments_id AND emps.jobs_id = jbs.jobs_id WHERE
+    CONCAT(mng.first_name, ' ', mng.last_name) = 'Mohamed Alansary';
+

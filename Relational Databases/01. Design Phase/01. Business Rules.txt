@@ -1,0 +1,161 @@
+Data vs. Information
+====================
+Data -> Processing -> Information
+
+Example
+=======
+2 Mohamed Alansary 24
+Mohamed is 24 years old and worked in Alansary Inc. for 2 years
+
+How to know what to store?
+==========================
+    Define:
+	Business needs
+	User needs
+	Business requirements
+	User requirements
+	Problem statement
+
+Example
+=======
+ - Ahmed, the owner of XYZ company, wants you to develop a system that
+   allows sales employees to store, search, and manage customers
+   information. (Customer Management System)
+ - Analyze and dig for more info
+   Develop a system that allows sales employees to store, search, and
+   manage customers information.
+
+Ask the Right Questions
+=======================
+    Open-ended questions
+    Close-ended questions
+
+Sample Questions
+================
+ - Tell me briefly about your overall business process
+   Respond is more generic
+   (Open-ended questions) that leads to more details to start asking
+   (Close-ended questions)
+   - What is the most painful business process that you face every single
+     day?
+   - What kind of tasks that takes a lot of your time every day?
+   Respond is specific
+   - What problems do Sales employees currently face?
+   - What kind of information do Sales staff deal with?
+   - What type of information do you collect from each customer?
+
+Requirements elicitation
+========================
+ - Requirements elicitation is the practice of collecting the requirements
+   of a system from users, customers and other stakeholders.
+ - Asking questions and getting answers, then asking more questions and
+   getting more answers and so on.
+   (Digging more and more)
+
+Example
+=======
+ - What do we know so far?
+   We need a customer management system.
+       Keywords: Store, Search, and Manage
+ - What we do not know so far?
+   The kind of customers information need to be collected!
+ - Meet sales team to find answers:
+   What type of information do you collect from each customer?
+   	First name
+	Middle name
+	Last name
+	Email
+	Phone
+	Address
+	City
+	State
+	Zip code
+	Age
+	Birth date
+	Credit card number
+	Register date
+
+Where to start creating your database?
+======================================
+    Database Management System? False
+    Pen and Paper? True
+
+Database Design and Implementation
+==================================
+Database Development is Broken into Two Phases:
+    1. Design/Logical
+    2. Implementation/Physical
+
+Design Phase
+============
+Entity: An object with distinct and independent existance.
+Attribute: Characteristics that allows us to identify the entity among
+           the other entities.
+Domains: characters/numeric/...
+
+Example
+=======
+Entity: Employee
+Attributes: Name, SSN, Profession, Salary, Hire Date
+Domains: VARCHAR, INTEGER, VARCHAR, FLOAT, DATE
+
+Entity: Patient
+Attributes: Name, Health Card ID, Address, Phone
+Domains: VARCHAR, INTEGER, TEXT, CHAR
+
+How to Define Entities?
+=======================
+Through a problem statement
+Ahmed, the owner of XYZ company, wants a customer management system that
+allows sales employees to (store) the following (customers data):
+(name, email, phone, address, age, birth date, credit card number, and
+register date.)
+
+    - Look for keywords
+    - (store) is an indecation that we need a database.
+    - Store what? (customers data)
+      - What kind of customer data we are looking for?
+        name, address, etc
+
+Entity: Customer
+Attributes: Name, Email, Phone, Address, Age, Birth Date, Credit Card no.,
+            and Register Date
+
+Implementation Phase
+====================
+Table
+    Customer
+Columns (Fields)
+    Name: Mohamed Amr Alansary
+    Email: mohamed_alansary@rocketmail.com
+    Phone: +20-1207395400
+    Address: Flat 105, Floor 3, Entrance 3, Building 2.
+    Age: 24
+    Birth Date: 10 Jan, 1993
+    Credit Card no: 4519000000
+    Register Date: 10 Oct, 2011
+Values are Records (Rows)
+
+Walk-through
+============
+Desktop Application - Mobile Application - Web Application
+
+Why Design Phase?
+=================
+    Eliminate anomalies
+     - When you want to delete something and end up deleting other things
+       unexpectedly
+     -> Insertion Anomaly
+     -> Deletion Anomaly
+     -> Update Anomaly
+    Eliminate unnecessary redundancy
+    Design phase allows you to:
+     - Maintain consistency
+     - Maintain accuracy
+
+Note
+====
+Logical phase == Modeling phase == Design phase
+Physical phase == Implementation phase
+
+

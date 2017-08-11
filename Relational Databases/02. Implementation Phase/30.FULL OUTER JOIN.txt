@@ -1,0 +1,4 @@
+Oracle
+======
+FULL OUTER JOIN combines LEFT OUTER JOIN and RIGHT OUTER JOIN
+

@@ -1,0 +1,29 @@
+Each cardinality has minimum value (minimum cardinality) and maximum value
+(maximum cardinality).
+The minimum is always the outside and the maximum is always the inside.
+The inside part of the cardinality is the part that touches the table.
+
+ - The straight line represents one.
+ - The circle represents zero.
+ - The three straight lines represent many.
+
+One or Many (X-----|<-Y)
+========================
+|<- means X must have at least 1 Y (represented by the line |) and maximum
+is many
+
+One and only One (X|-|-----Y)
+=============================
+|-| means Y must have One and only One X (minimum value is 1 and maximum
+value is 1)
+
+Zero or Many (X-------0<-Y)
+===========================
+0<- means X can have zero or many Y (minimum value is 0 and maximum value
+is many)
+
+Zero or One (X|-0--------Y)
+===========================
+|-0 means Y can have zero or many X (minimum value is 0 and maximum value
+is many)
+

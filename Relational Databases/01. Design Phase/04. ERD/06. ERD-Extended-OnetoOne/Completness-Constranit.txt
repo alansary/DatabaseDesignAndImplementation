@@ -1,0 +1,24 @@
+Partial Completness
+===================
+Tells us that it is not necessary for the super-type table to have a record
+in any sub-type table, you could have a record in the super-type table
+without a record in any sub-type table. That is, it is optional for the
+supertype to have a record in any of the subtypes.
+
+Total Completness
+=================
+Tells us that for every record in the super-type table, we must have a
+record in any of the sub-type tables. That is, it is mandatory for the
+supertype to have a subtype.
+
+The letter 'd'
+==============
+'d' stands for Disjoint Subtypes/Nonoverlapping Subtypes; that is, it is
+Optional/Mandatory for a record in the supertype to have a record in a
+subtype but in one and only one subtype.
+
+The letter 'o'
+==============
+'o' stands for Overlapping Subtypes; that is, it is Optional/Mandatory for
+a record in the supertype to have a record in more than one subtype.
+

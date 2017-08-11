@@ -1,0 +1,3 @@
+TRIM                    Trims spaces from string (Python strip)
+TRIM(string-literal/string-column);
+

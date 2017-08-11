@@ -1,0 +1,7 @@
+-- CHAR(n) -> fixed-size string. (fixed length is n)
+-- VARCHAR(n) -> variable-size string. (maximum length is n)
+-- When to use CHAR?
+   -- ZipCodes, PhoneNumbers, States, ...
+-- When to use VARCHAR?
+   -- FirstName, LastName, Address, ...
+

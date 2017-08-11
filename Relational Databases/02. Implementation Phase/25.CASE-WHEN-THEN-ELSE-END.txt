@@ -1,0 +1,22 @@
+SELECT col1, col2, ..., coln,
+    CASE
+	WHEN condition1 THEN value1
+	WHEN condition2 THEN value2
+	...
+	WHEN conditionn THEN valuen
+	ELSE value
+    END AS 'alias';
+
+SELECT first_name AS 'First Name', last_name AS 'Last Name',
+    CASE
+	WHEN salary <= 10000 THEN 'Low Income'
+	WHEN salary > 10000 AND salary <= 20000 THEN 'Medium Income'
+	WHEN salary > 20000 AND salary <= 30000 THEN 'High Income'
+	ELSE 'Very High Income'
+    END AS 'Income'
+    FROM employees ORDER BY salary DESC;
+
+Oracle
+======
+SELECT DECODE(col, val1, res1, val2, res2, ..., valn, resn, else-res);
+

@@ -1,0 +1,12 @@
+-- Concatenation of Strings
+-- MySQL SELECT CONCAT(col1, ..., str1, ..., coln, strn) FROM table_name;
+-- Oracle SELECT col1 || ... || str1 || ... || coln || strn FROM table_name;
+SELECT CONCAT(FirstName, ' ', LastName) AS "Full Name" FROM Customer;
+SELECT CONCAT(FirstName, ' ', LastName, ' is ', Age, ' years old.')
+    AS "Info" FROM Customer;
+SELECT CONCAT(FirstName, ' ', LastName, ' is ', Age, ' years old.')
+    AS "Info" FROM Customer WHERE Age IS NOT NULL;
+SELECT CONCAT(FirstName, ' ', LastName, ' is ', Age, ' years old.')
+    AS 'Information' FROM Customer WHERE Age IS NOT NULL
+    ORDER BY Age DESC, FirstName ASC;
+

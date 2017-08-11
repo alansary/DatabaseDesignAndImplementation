@@ -1,0 +1,22 @@
+-- Precedence Rules and De-Morgan's Laws
+/*
+        Precedence of Logical Operators:
+	 - De-Morgan's Laws
+	 - ()
+         - NOT
+         - AND
+         - OR
+        De-Morgan's Laws:
+         - NOT (X AND Y) == NOT X OR NOT Y
+         - NOT (X OR Y)  == NOT X AND NOT Y
+*/
+-- First Law of DeMorgan
+SELECT * FROM Customer WHERE NOT (FirstName = 'Mohamed' AND Age >= 23);
+-- NOT -> OR
+SELECT * FROM Customer WHERE NOT FirstName = 'Mohamed' OR Age < 23;
+-- NOT -> AND
+SELECT * FROM Customer WHERE NOT FirstName = 'Mohamed' AND Age >=23;
+-- AND -> OR
+SELECT * FROM Customer WHERE Age IS NULL
+    OR FirstName = 'Mohamed' AND Age = 23;
+

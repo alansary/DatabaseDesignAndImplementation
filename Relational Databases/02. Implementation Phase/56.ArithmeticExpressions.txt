@@ -1,0 +1,6 @@
+Multiply *
+Divide /
+Add +
+Subtract -
+-- The result of any arithmetic expression involving NULL is NULL
+

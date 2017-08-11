@@ -1,0 +1,27 @@
+-- Views
+CREATE VIEW vw_name AS
+<SELECT query>
+
+-- Make changes to views
+CREATE OR REPLACE VIEW vw_name AS
+<SELECT query>
+
+-- Drop a view
+DROP VIEW vw_name;
+
+CREATE VIEW vw_test AS
+SELECT * FROM archive1
+UNION ALL
+SELECT * FROM archive2
+UNION ALL
+SELECT * FROM archive3;
+
+CREATE OR REPLACE VIEW vw_test AS
+SELECT * FROM archive1
+UNION
+SELECT * FROM archive2
+UNION
+SELECT * FROM archive3;
+
+DROP VIEW vw_test;
+

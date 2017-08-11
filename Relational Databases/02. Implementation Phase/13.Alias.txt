@@ -1,0 +1,8 @@
+-- Alias
+/*
+SELECT col1 AS alias1, col2 AS alias2, ..., coln AS aliasn FROM table_name;
+*/
+SELECT FirstName AS "First Name", LastName AS "Last Name",
+    CustomerID AS "Identification Number"
+    FROM Customer;
+

@@ -1,0 +1,7 @@
+Entity Relationship Diagram (ERD)
+=================================
+ - A graphical representation of the whole database/system architecture.
+ - Why Critical?
+   ERD gives you a quick summarized view of what's needed to be implemented
+   in the Database Management System.
+

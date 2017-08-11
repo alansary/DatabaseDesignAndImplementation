@@ -1,0 +1,7 @@
+/*
+SELECT col1, col2, ..., coln FROM table_name;
+SELECT * FROM table_name;
+*/
+SELECT CustomerID, LastName, FirstName, Age FROM Customer;
+SELECT * FROM Customer;
+

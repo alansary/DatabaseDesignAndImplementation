@@ -1,0 +1,1002 @@
+Database Design in Step by Step
+===============================
+  1. Define Entities
+  2. Define Attributes
+  3. Define a Domain for each Attribute
+  4. Keys and Normalization
+
+==========================================================================
+
+Database Keys and Normalization
+===============================
+  What is Normalization?
+  - Normalization is the process of organizing data in a database.
+
+  Why Normalization?
+  - Eliminate anomalies and eliminate unnecessary redundancy.
+  - Data consistency and data integrity.
+
+  How to Normalize?
+  - First Normal Form (1NF)
+  - Second Normal Form (2NF)
+  - Third Normal Form (3NF)
+  - Boyce-Codd Normal Form (BCNF)
+  - Fourth Normal Form (4NF)
+  - Fifth Normal Form (5NF)
+  - Sixth Normal Form (6NF)
+
+==========================================================================
+
+First Normal Form
+=================
+I- Eliminate Multi-Value
+========================
+  - Each cell should have an atomic value (single/indivisible value)
+    (one and only one value)
+
+  Example
+  =======
+  Name
+  Mahmoud
+  Ahmed Ali
+  Mohamed Ahmed Elbendary
+  - This violates 1NF, we have to break Name column into multiple columns
+  First Name
+  Second Name
+  Last Name
+
+  Example
+  =======
+  Address
+  123 South Street, Alton TX, 12345 USA
+  - This violates 1NF, we have to break Address column into multiple
+    columns
+  Address 1
+  Address 2
+  City
+  State
+  Zip Code
+  Country
+
+  Note
+  ====
+   - Do not over complicate your design!
+
+  Example
+  =======
+  Phone
+  (902) 888-3333
+  - This violates 1NF, should we break that down into "Area Code" and
+    Phone? No, unless the client wants to do it that way, otherwise, don't
+    over complicate your design (Denormalization decision)
+
+  Example
+  =======
+  Address1
+  601 York st
+  - Does that means that we have a multi-value here?
+    The owner of the project can answer this, you have to go and confirm
+    with Ahmed
+    Do you prefere separating street name from street number?
+
+  Example
+  =======
+  Phone
+  (416) 999-1111, (416) 444-4444
+  (416) 999-1111, (416) 444-4444, (213) 111-3333
+  (231) 444-3333
+  - We have a multi-value here. How to solve this?
+    We will break phone into two fields 'Home phone' and 'Work phone' or
+    even three fields 'Home phone', 'Work phone' and 'Mobile phone' or
+    even four fields adding 'Emergency phone' and may be five fields
+    adding 'Fax number', this cause the table to grow horizontally.
+
+  Data table are meant to grow vertically and not horizontally
+  Base vs. Floors
+   - Table = Base and Floors = Rows
+  Dont't face the need to re-structure the table by adding or removing
+  columns
+
+  Rule of Thumb
+  =============
+   - Any indefinite multi-value column should be taken out of the table.
+   - Apply multi-value on definite fields only.
+   - Eliminate multi-value fields could mean the following:
+     1. Break the multi-value into multiple fields.
+     2. Remove the multi-value field totally as if it never existed in
+        the table.
+
+  Remember!
+  =========
+   - A table should not grow horizontally. Indefinite multi-value fields
+     support horizontal growth. In other words, multi-value fields put you
+     in a situation where you end up expanding the table horizontally.
+     For instance, you might have 'Home Phone' and 'Cell Phone' fields
+     today! However, soon you might find yourself adding more fields as
+     'Fax Phone', 'Work Phone', 'Emergency Phone', and more, which lead to
+     horizontal growth! Got It?
+
+--------------------------------------------------------------------------
+
+II- Assign Primary Key
+======================
+  Eliminate Table within a Table
+  What is a primary key?
+    A primary key is a field or a combination of fields in a table which
+    is unique and enables you to identify every record in that table.
+
+  Example
+  =======
+  First Name, Middle Name, Last Name, Email, Birth Date, Driver License #,
+  SSN
+  What column(s) would be make a good primary key?
+   - First Name + Last Name + Email? Yes
+   - First Name + Last Name + Birth Date? No
+   - Email? Yes
+   - SSN? Yes
+   - Driver License Number? Yes
+   - First Name + Last Name + SSN? Yes
+
+  To assign a PK for a table, apply the given steps:
+  ==================================================
+   1. Super Key
+   2. Candidate Key
+   3. Primary Key
+   4. Alternative/Secondary Key
+
+  SuperKey
+  ========
+   - All possible combination of columns that would allow us to uniquely
+     identify each row in a table.
+
+  Example
+  =======
+  First Name, Middle Name, Last Name, Email, Birth Date, Driver License #,
+  SSN
+  - SuperKey
+    - First Name, Last Name, Birth Date, Email, Driver License, SSN
+    - First Name, Last Name, Birth Date, Email, Driver License
+    - First Name, Last Name, Email
+    - Middle Name, SSN
+    - Driver License, SSN
+    - Driver License
+    - SSN
+  - No specific rule here for choosing combinations that uniquely identify
+    each row in the table.
+
+  Candidate Key
+  =============
+  - Candidate Key is a SuperKey that uniquely identifies a record with
+    least amount of columns. We can have multiple Candidate Keys.
+  - Is our selected combinations from the SuperKey list.
+  - Candidate Key must have the following characteristics:
+    1. A Candidate Key should be irreducable (minimal).
+       Do we necessarily need each column to identify each row uniquely?
+    2. A Candidate Key must be unique all the time.
+       Satisfied in the SuperKey list
+    3. A Candidate Key must not have NULL value.
+
+      NULL
+      ====
+      - Represents the complete absance of a value.
+
+  Example
+  =======
+  - First Name, Last Name, Birth Date, Email, Driver License, SSN
+    It is not minimal (reducable), we can remove Birth Date and Driver
+    License and we will uniquely identify each row in the table
+    It violates the first rule of a candidate key, cannot be selected
+  - First Name, Last Name, Birth Date, Email, Driver License
+    It is reducable, if we removed Birth Date and Email we will be able
+    to uniquely identify each row in the table, it cannot be selected
+  - First Name, Last Name, Email
+    Assuming non of the above columns could be NULL, if we taken out Email
+    , it will not uniquely identify each row in the table. It is
+    irreducable, uniquely identifies each row in the table and non of its
+    values can be NULL, then it is a Candidate Key
+  - Middle Name, SSN
+  - Driver License, SSN
+  - Driver License
+    Irreducable, Unique but can be NULL (not every customer will have a
+    Driver License), so, it can not be selected
+  - SSN
+    Assume all the customers that come to us has a Social Security Number,
+    it is irreducable, uniquely identifies each row in the table and not
+    NULL, it is indeed a Candidate Key
+
+  Primary Key
+  ===========
+  - A Primary Key is a column or a combination of columns that uniquely
+    identify a record. Only one Candidate Key can be a Primary Key.
+  - The given Primary Key rules are just guidlines on how to pick a good
+    Primary Key. Never underestimate the design phase.
+  A Primary Key should have the following characteristics:
+    - PK must be unique - no exceptions. (Mandatory)
+    - PK must always exist in the table. (Mandatory)
+    - PK value should not change over time. (Mandatory)
+    - pk should have least amount of attributes necessary; having single
+      attribute as PK is recommended. (Highly Recommended)
+    - pK value should not be too long or complex or hard to remember.
+      (Highly Recommended)
+    - PK should be in a numeric value. (Highly Recommended)
+    - PK should not expose confidential information. (Highly Recommended)
+
+  Example
+  =======
+  (SSN) is too long and hard to remember -> violation
+        Expose confidential information
+  (First Name, Last Name, Email)
+        Assume that Email can not change over time
+        Not a single attribute, i.e, composite key -> violation
+        Not a numeric value -> violation
+  We decided to assign (First Name, Last Name, Email) as PK because it is
+  unique, easy to remember, always exist in the table, never changes, and
+  not considered as sensitive data.
+
+  Alternative Key (Secondary Key)
+  ===============================
+  - Alternative Key is the rest of Candidate Keys which weren't selected
+    as PK.
+
+  Example
+  =======
+  Candidate Keys
+    First Name, Last Name, Email
+    SSN
+  Primary Key
+    First Name, Last Name, Email
+  Alternative Key (Secondary Key)
+    SSN
+
+  - If we at some point in the design phase decided that we want to change
+    the Primary Key, we simply exchange the current Primary Key with one
+    of the Alternative Keys (We don't have to do the analysis again). That
+    is why you should choose good Candidate Keys.
+
+  Surrogate Key
+  =============
+  Is a Primary Key with auto-generated numbers (ID).
+  INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY
+
+  Example
+  =======
+  - Comparing First Name, Last Name, Email with Customer ID, indeed
+    customer ID wins.
+
+  Simple Key vs. Composite Key
+  ============================
+  - Any key consists of a single column is called "Simple Key" and any
+    key with multiple columns is called "Composite Key". Simple Key is
+    always preferred to be set as Primary Key.
+
+--------------------------------------------------------------------------
+
+III- Eliminate Repeating Group
+==============================
+  Example
+  =======
+  Business Requirement:
+   - XYZ Corp, wants a system for managing departments and employees data.
+     Each department has one or many employees and each employee can work
+     in one or many departments.
+
+  Business Requirement Analysis
+   - Manage deparments and employees?
+     We can't manage data until we store data!
+   - Departments/Employees
+     Department Code
+     Department Name
+     Employee ID
+     Employee First Name
+     Employee Last Name
+
+  What does Stackeholders mean?
+  =============================
+   - A person, group or organization that has interest or concern in an
+     organization.
+   - Stakeholders can affect or be affected by the organization's actions,
+     objectives and policies.
+
+   - An example of stakeholders:
+   =============================
+     Managers
+     Employees
+     Directors
+     Business Owners
+
+  Having a repeating group in a table has three things:
+  =====================================================
+   1- Data Redundancy
+   2- Anomalies (caused by data redundancy)
+   3- Data Inconsistency
+
+  Example
+  =======
+  Employees and Departments Table
+  Dep Code	Dept Name	Emp Id		Emp Fname	Emp Lname
+  FIN		Finance 	100		Mohamed		Alansary
+				200		Nour		Eldien
+				300		Mahmoud		Taha
+  IT		InfoTech	100		Mohamed		Alansary
+				200		Nour		Eldien
+				300		Mahmoud		Taha
+				400		Mohamed		Salah
+
+  - To change the Emp Lname for Nour Eldien to Eldin, you have to update
+    all the records (in FIN and IT) for that employee. What if you updated
+    one record only and left the second one as is, then you will end up
+    with data inconsistency.
+     - Employee Full Name in FIN Dep: Nour Eldin
+     - Employee Full Name in IT Dep : Nour Eldien
+     - Which one is correct and which one is not? (Data Inconsistency)
+
+  How to Eliminate a Repeating Group?
+  ===================================
+  1- Determine columns that cause repeating groups.
+
+    Example
+    =======
+    Emp ID, Emp Fname and Emp Lname are the columns that cause repeating
+    groups.
+
+  2- Assing a Primary Key to the table.
+     Execlude columns that causes a repeating group.
+
+    Example
+    =======
+    Execluding Emp ID, Emp Fname and Emp Lname, we can clearly see that
+    Dep Code is a good Primary Key.
+
+  3. Assign a Primary Key for the repeating group columns.
+
+    Example
+    =======
+    Emp ID is a good Primary Key.
+
+  Example
+  =======
+  We now have two Primary Keys for the same table (Dep Code and Emp ID),
+  these two keys are called composite key
+
+  Composite Key
+  =============
+  Composite Primary Key columns must be treated equally. For example, when
+  inserting a record into the table, you must provide a value for Dept
+  Code as well as Emp ID. You cannot provide a value for Dept Code and
+  leave Emp ID empty (NULL) or vice versa. (Treated as a single unit)
+
+  Example
+  =======
+  Employees and Departments Table
+  Dep Code      Dept Name       Emp Id          Emp Fname       Emp Lname
+  FIN           Finance         100             Mohamed         Alansary
+  FIN		Finance		200             Nour            Eldien
+  FIN		Finance		300             Mahmoud         Taha
+  IT            InfoTech        100             Mohamed         Alansary
+  IT		InfoTech	200             Nour            Eldien
+  IT		InfoTech	300             Mahmoud         Taha
+  IT		InfoTech	400             Mohamed         Salah
+
+  Remember!
+  =========
+  Primary Keys do not allow duplicates.
+
+  Example
+  =======
+  Trying to insert Dep Code FIN and Emp ID 100 again will give you an
+  error, this record already exist in the table.
+
+  Entity Integrity ensures each record in each table of a database can be
+  specifically identified via the primary key. This prevents duplicate
+  records and other issues that would indirectly compromise the integrity
+  of the database. In the absance of entity integrity, the entites in a
+  database can accidentally overlap, as there will be no way to pluck a
+  specific entry from the table.
+
+  Example
+  =======
+  Employees and Departments Table
+  Dep Code      Dept Name       Emp Id          Emp Fname       Emp Lname
+  FIN           Finance         100             Mohamed         Alansary
+                                200             Nour            Eldien
+                                300             Mahmoud         Taha
+				300		Mahmoud		Taha
+  IT            InfoTech        100             Mohamed         Alansary
+                                200             Nour            Eldien
+                                300             Mahmoud         Taha
+                                400             Mohamed         Salah
+
+
+  Example
+  =======
+  This table in the First Normal Form
+  Employees and Departments Table
+  Dep Code      Dept Name       Emp Id          Emp Fname       Emp Lname
+  FIN           Finance         100             Mohamed         Alansary
+  FIN           Finance         200             Nour            Eldien
+  FIN           Finance         300             Mahmoud         Taha
+  IT            InfoTech        100             Mohamed         Alansary
+  IT            InfoTech        200             Nour            Eldien
+  IT            InfoTech        300             Mahmoud         Taha
+  IT            InfoTech        400             Mohamed         Salah
+
+  Note
+  ====
+  The repeating group is not removed from the table yet. You have just
+  learned the first process required to eliminate the repeating group
+  from the table. In coming lessons, those repeating groups will be
+  removed from the table.
+
+--------------------------------------------------------------------------
+
+  First Normal Form (1NF) - Exercise
+  ==================================
+  A university head office requested you to develop a web application that
+  helps students register courses online. Deadline: one week!!!
+
+  << Solution >>
+  1. Gather business requirements!
+     - How do students register courses in your University?
+       Will basically, a student has to come the registers office, pick a
+       number and he/she has to wait until the number shows on the screen.
+       The student goes to the registers place with a list of courses
+       he/she wants to register and the staff will have to confirm if the
+       student paid the fees or not first, if the student paid the fees, 
+       the staff will go ahead and register the list of courses for the
+       student, if the student did not pay the fee, the staff will
+       request the student to pay the fee first. If the student could
+       not make it at that moment, then no registeration can happen. Let's
+       assume that that the student paid the fees already, if one of the
+       courses is full, that student would be put onto waiting list for
+       that course but being in the waiting list doesn't grantee that the
+       student will get into the course this semester. Once the staff
+       basically register the courses. A time table with these courses
+       will be printed out and given to the student and basically that's
+       how we have been doing it for quite some time.
+    - What kind of problems did you find in that registeration process?
+       Will, you know, this process takes too much time, the student has
+       to come too earily and waits for one or two hours and the
+       registeration process takes about ten to fifteen minutes for each
+       student and the university has about two thousand students and
+       sometimes it takes even more than fifteen minutes to each student.
+       So, the students has to wait alot, some of them wait one to two
+       hours, some of them wait to three hours, we can not really handle
+       it any more. We have to add more staff into the registeration
+       office to handle registeration, this cost us a lot of money and it
+       is very time consuming. That is why we need a system to manage this
+       process.
+    - When students come to the office to register for courses, what kind
+       of data or information do you request from them?
+       We ask them to give us the Student ID, Student Fname and Student
+       Lname that is all we ask.
+    - Okay, what is about courses, when they register for courses, what
+      kind of courses information you are looking for before registering
+      into the system?
+       Basically, we just need their Course ID and Course Name that is all
+       we need.
+    - Okay, that is great, I have enough information. Let me just summary
+      that for you, ...
+    - Okay, thank you so much, I have enough information for now, if any
+      other question pops-up I will get back to you, but so far I have
+      every thing that I need, thank you for your time and I will see you
+      later.
+  2. Analyze the business requirements
+     - Store Students and Courses Data
+       course code, course name, student ID, first name, and last name
+
+  Student Records
+  Course Code	Course Name	Student ID	Student Fname	S Lname
+  TECH		Technology	55554		Mohamed		Alansary
+                - Technology and Business
+  				77544		Nour		Eldien
+  ECON		Economy		87543		Mahmoud		Taha
+                - Global Economy
+  ACCT		Accounting	55554		Mohamed		Alansary
+  		- Basice Accounting
+  				77544		Nour		Eldien
+  				77865		Mohamed		Salah
+  CHEM		Chemistry	87543		Mahmoud		Taha
+  		- Essential Chemistry
+  				77544		Nour		Eldien
+  				77865		Mohamed		Salah
+
+    - Let's apply First Normal Form (1NF) on that table:
+      1. Eliminate Multi-value.
+         All have atomic values except Course Name which have Course Name
+         and Course Title as a value.
+
+Student Records
+Course Code Course Name Course Title Student ID Student Fname S Lname
+TECH        Technology  Technology   55554      Mohamed       Alansary
+                        and Business
+                                     77544      Nour          Eldien
+ECON        Economy     Global       87543      Mahmoud       Taha
+                	Economy
+ACCT        Accounting  Basic        55554      Mohamed       Alansary
+              		Accounting
+                                     77544      Nour          Eldien
+                                     77865      Mohamed       Salah
+CHEM        Chemistry   Essential    87543      Mahmoud       Taha
+              		Chemistry
+                                     77544      Nour          Eldien
+                                     77865      Mohamed       Salah
+
+
+      2. We will go first with Eliminating Repeating Groups because we
+         can see clearly that we have a repeating group in this table.
+         1. Determine the columns that cause repeating groups.
+            Student ID, Student Fname, and Student Lname
+         2. Assign a Primary Key for that table execluding the repeating
+            group sets.
+            We will choose Course Code out of Course Code, Course Name,
+            and Course Title.
+         3. Assign a Primary Key for the repeating groups.
+            We have the repeating group Student ID, Student Fname, and
+            Student Lname, we will choose Student ID as a Primary Key.
+         - Now we have Course Code and Student ID as a composite Primary
+           Key for the Student Records table.
+
+Student Records
+Course Code Course Name Course Title Student ID Student Fname S Lname
+TECH        Technology  Technology   55554      Mohamed       Alansary                            and Business
+TECH        Technology  Technology   77544      Nour          Eldien
+			and Business
+ECON        Economy     Global       87543      Mahmoud       Taha
+                        Economy
+ACCT        Accounting  Basic        55554      Mohamed       Alansary
+                        Accounting
+ACCT	    Accounting  Basic        77544      Nour          Eldien
+			Accounting
+ACCT	    Accounting  Basic        77865      Mohamed       Salah
+			Accounting
+CHEM        Chemistry   Essential    87543      Mahmoud       Taha
+                        Chemistry
+CHEM	    Chemistry   Essential    77544      Nour          Eldien
+			Chemistry
+CHEM	    Chemistry   Essential    77865      Mohamed       Salah
+			Chemistry
+
+- Now this table is in the First Normal Form (1NF), it has an entity
+  integrity, we have a Primary Key, and no duplicates are allowed, we are
+  ready to go to the Second Normal From (2NF).
+
+==========================================================================
+Second Normal Form (2NF)
+========================
+ - Before applying the Second Normal Form, you have to make sure that the
+   table is already in the First Normal Form because the Second Normal
+   Form is dependent on the First Normal Form.
+ Second Normal Form
+ ==================
+  - Remove Partial Dependency
+    - All non-key attributes are fully dependent on the entire primary key
+
+  Example
+  =======
+Student Records
+Course Code Course Name Course Title Student ID Student Fname S Lname
+TECH        Technology  Technology   55554      Mohamed       Alansary                            and Business
+TECH        Technology  Technology   77544      Nour          Eldien
+                        and Business
+ECON        Economy     Global       87543      Mahmoud       Taha
+                        Economy
+ACCT        Accounting  Basic        55554      Mohamed       Alansary
+                        Accounting
+ACCT        Accounting  Basic        77544      Nour          Eldien
+                        Accounting
+ACCT        Accounting  Basic        77865      Mohamed       Salah
+                        Accounting
+CHEM        Chemistry   Essential    87543      Mahmoud       Taha
+                        Chemistry
+CHEM        Chemistry   Essential    77544      Nour          Eldien
+                        Chemistry
+CHEM        Chemistry   Essential    77865      Mohamed       Salah
+                        Chemistry
+'Course Code' and 'Student ID' is a composite primary key
+'Course Name', 'Course Title', 'Student Fname', and 'Student Lname' are
+non-key columns
+According to the Second Normal Form, we need to make sure that all non-key
+columns are fully related and fully dependent on the entire primary key.
+'Course Name' and 'Course Title' are defenitely dependent on 'Course Code'
+'Student Fname' and 'S Lname' are defenitely dependent on 'Student ID'
+but neither of them is dependent on the entire primary key 'Course Code'
+and 'Student ID', you can think of 'Course' and 'Student' as two different
+entities; that is, a Student is not a Course and a Course is not a Student
+, so, this table violates Second Normal Form because we have partial
+dependency, not all non-key attributes fully depend and relate to the
+entire primary key.
+'Course Code' is sufficient enough to give you back the 'Course Name' and
+the 'Course Title' and 'Student ID' is sufficient enough to give you back
+the 'Student Fname' and the 'Student Lname'.
+
+  We have partial dependency, what can we do?
+  ===========================================
+   - Break the table into two smaller ones.
+
+  Example
+  =======
+  Course
+  Course Code		Course Name		Course Title
+  TECH			Technology		Technology and Business
+  ECON			Economy			Global Economy
+  ACCT			Accounting		Basic Accounting
+  CHEM			Chemistry		Essential Chemistry
+
+  'Course Code' is the Primary Key
+  All of the non-key columns in the Course table are fully dependent on
+  the Primary Key
+
+  Student
+  Student ID		Student Fname		Student Lname
+  55554			Mohamed			Alansary
+  77544			Nour			Eldien
+  77865			Mohamed			Salah
+  87543			Mahmoud			Taha
+
+  'Student ID' is the Primary Key
+  All of the non-key columns in the Student table are fully dependent on
+  the Primary Key
+
+  Both of these tables complies with the Second Normal Form, we don't have
+  partial dependencies in these tables any more. Defenitely these tables
+  are in the First Normal Form too.
+
+  Example
+  =======
+  Apply 2NF on the following table where the table is already in 1NF.
+
+  Customer Product
+  Cust ID and Prod ID is a composite primary key.
+  Cust ID	Cust Fname	Prod ID		Prod Name	Qty
+  1230		James		1		Lotion		2
+  1320		James		2		Soap		4
+  5542		Michael		54		Cat Food	1
+  4432		Katie		1		Lotion		15
+  7778		Sara		5		Diapers		1
+
+  Customer
+  Cust ID is the primary key
+  Cust ID is sufficient enough to help me grap the Cust Fname
+  Cust ID	Cust Fname
+  1230		James
+  5542		Michael
+  4432		Katie
+  7778		Sara
+
+  Product
+  Prod ID is the primary key
+  Prod ID is sufficient enough to help me grap the Prod Name
+  Prod ID	Prod Name
+  1		Lotion
+  2		Soap
+  54		Cat Food
+  5		Diapers
+
+  Customer Product (Shopping List)
+/*
+  Cust ID and Prod ID are Foreign Keys, reference Cust Id in Customer
+  table and Prod Id in Product table, respectively.
+*/
+/*
+  Assuming that the customer X cannot have the product Y more than once,
+  then this table is in the 1NF as well as the 2NF.
+*/
+  Qty depends on the Cust ID and the Prod ID
+  Cust ID	Prod ID		Qty
+  1230		1		2
+  1320		2		4
+  5542		54		1
+  4432		1		15
+  7778		5		1
+
+/*
+  Note
+  ====
+  Making Cust ID and Prod ID a composite primary key in the Shopping List
+  table ensures the uniqueness of there values that means the customer
+  with Cust ID X cannot have the product with Prod ID Y more than once.
+  So, we make them reference the primary keys in the Customer and Product
+  tables, respectively. But how we uniquely identify a record within
+  the Shopping List table, we must add another primary key for this table,
+  let's say Shopping ID is the primary key for this table.
+
+  Shopping ID	Cust ID       Prod ID         Qty
+  1		1230          1               2
+  2		1320          2               4
+  3		5542          54              1
+  4		4432          1               15
+  5		7778          5               1
+*/
+
+  Additional Exercise
+  ===================
+Student Course
+'Course Code' and 'Student ID' is a composite primary key for this table
+Course Code Course Name Course Title Student ID S Fname S Lname Grade
+TECH        Technology  Technology   55554      Jack    Philips A+
+			and Business
+TECH        Technology  Technology   77544      Sara    Norman  B-
+                        and Business
+ECON        Economy     Global       87543      Paul    McMahen A
+                        Economy
+ACCT        Accounting  Basic        55554      Jack    Philips C-
+                        Accounting
+ACCT        Accounting  Basic        77544      Sara    Norman  A
+                        Accounting
+ACCT        Accounting  Basic        77865      Suzzane Buffet  A+
+                        Accounting
+CHEM        Chemistry   Essential    87543      Paul    McMahen C+
+                        Chemistry
+CHEM        Chemistry   Essential    77544      Sara    Norman  A
+                        Chemistry
+CHEM        Chemistry   Essential    77865      Suzzane Buffet  B+
+                        Chemistry
+
+Course
+Course Code is the primary key for this table
+Course Code	Course Name	Course Title
+TECH        	Technology  	Technology and Business
+ECON        	Economy 	Global Economy
+ACCT        	Accounting  	Basic Accounting
+CHEM        	Chemistry   	Essential Chemistry
+
+Student
+Student ID is the primary key for this table
+Student ID	Student Fname	Student Lname
+55554      	Jack    	Philips
+77544      	Sara    	Norman
+87543      	Paul    	McMahen
+77865      	Suzzane 	Buffet
+
+Student Course (Student Records)
+Grade depends on Course Code and Student ID
+FOREIGN KEY (Course Code) REFERENCES Course (Course Code)
+FOREIGN KEY (Student ID) REFERENCES Student (Student ID)
+PRIMARY KEY (Course Code, Student ID)
+Student ID X can not register Course Code Y more than once, 'Course Code'
+and 'Student ID' is a composite key for this table and this table is in
+the 1NF as well as the 2NF
+Course Code	Student ID	Grade
+TECH        	55554      	A+
+TECH        	77544      	B-
+ECON        	87543      	A
+ACCT        	55554      	C-
+ACCT        	77544     	A
+ACCT        	77865      	A+
+CHEM        	87543      	C+
+CHEM        	77544      	A
+CHEM        	77865      	B+
+
+==========================================================================
+
+  Third Normal Form (3NF)
+  =======================
+  - Remove Transitive Dependencies
+    - Ensure all non-keys are fully dependent on the PK, No non-key should
+      depend on another non-key.
+      - Remove calculated columns.
+
+  Example
+  =======
+  The following table is in the First Normal Form and the Second Normal
+  Form, but is it in the Third Normal Form?
+
+  Cust ID	Cust Last Name	Cust Zipcode	DOB		Age
+  1320		James		43356		5 Oct, 1984	30
+  5542		Michael		55455		24 Feb, 1955	60
+  4432		Katie		66677		10 Jan, 1975	40
+  7778		Sara		46568		13 Apr, 1963	52
+
+  Age column is full dependent on the DOB column (non-key field is
+  dependent on another non-key field), it is not in the Third Normal Form
+  Age = System Date - DOB, if you keep Age column, then you must update
+  the Age column for each customer each single year.
+
+  - We will remove the Age column entirely from the table as if it never
+    occurs.
+
+  Cust ID       Cust Last Name  Cust Zipcode    DOB
+  1320          James           43356           5 Oct, 1984
+  5542          Michael         55455           24 Feb, 1955
+  4432          Katie           66677           10 Jan, 1975
+  7778          Sara            46568           13 Apr, 1963
+
+  Example
+  =======
+  Assume that the following table is in the First Normal Form and the
+  Second Normal Form, is it in the Third Normal Form?
+
+  Customer Shopping List
+  Cust ID	Prod ID		Unit Price	Qty	Total
+  1230		1		10		2	$20
+  1320		2		2		4	$8
+  5542		54		5		1	$5
+  4432		1		7		3	$21
+  4432		20		2.5		3	$7.50
+  7778		5		12		1	$12
+
+  Total column is fully dependent on the Unit Price and the Qty and not
+  the Cust ID and the Prod ID, Total column can be calculated as follows:
+   - Total = Unit Price * Qty
+   - When the Qty and/or the Unit Price changes, we have to go and update
+     Total manually
+
+  Cust ID       Prod ID         Unit Price      Qty
+  1230          1               10              2
+  1320          2               2               4
+  5542          54              5               1
+  4432          1               7               3
+  4432          20              2.5             3
+  7778          5               12              1
+
+==========================================================================
+
+  What is after 1NF, 2NF, and 3NF?
+  ================================
+  First Normal Form (1NF) (Mandatory)
+  Second Normal Form (2NF) (Mandatory)
+  Third Normal Form (3NF) (Mandatory)
+  Benefits of 1NF, 2NF, and 3NF
+   - Removes redundancies
+   - Removes unnecessary columns
+   - Enforces entity integrity that is enforces you to assign PK in each
+     table
+  Boyce-Codd Normal Form (BCNF) (Optional)
+  Fourth Normal Form (4NF) (Optional)
+  Fifth Normal Form (5NF) (Optional)
+  Sixth Normal Form (6NF) (Optional)
+
+==========================================================================
+
+  Example (1NF, 2NF and 3NF)
+  ==========================
+
+  Student Records
+  Student ID | Student Name | Course ID | Course Name | Cost | Final Grade
+  100        | James Smith  | 444       | Math        | 350  | A
+             |              | 555       | Science     | 400  | C+
+  200        | Marisa Marcos| 444       | Math        | 350  | B
+             |              | 555       | Science     | 400  | B-
+  299        | Sara Ahmed   | 444       | Math        | 349  | A+
+             |              | 555       | Science     | 400  | A-
+
+  First Normal Form (1NF)
+  =======================
+
+  1. Eliminate Multi-value columns.
+Student ID | Fname | Lname | Course ID | Course Name | Cost | Final Grade
+100        | James | Smith | 444       | Math        | 350  | A
+           |       |       | 555       | Science     | 400  | C+
+200        | Marisa| Marcos| 444       | Math        | 350  | B
+           |       |       | 555       | Science     | 400  | B-
+299        | Sara  | Ahmed | 444       | Math        | 349  | A+
+           |       |       | 555       | Science     | 400  | A-
+
+  2. Assign a Primary Key.
+  Super-Keys
+    Uniquely identifies each row in the table.
+  Candidate-Keys
+    Uniquely identifies each row in the table.
+    Do not have NULL values.
+    Minimal (irreducable).
+  Primary-Key
+    Uniquely identifies each row in the table. (Mandatory)
+    Does not have NULL values. (Mandatory)
+    Minimal (irreducable). (Mandatory)
+    Does not change over time. (Mandatory)
+    Simple primary key (not composite). (Optional)
+    Numeric value. (Optional)
+    Does not expose confidential information. (Optional)
+    Easy to remember. (Optional)
+  Alternative-Keys (Secondary-Keys)
+
+  Student ID and Course ID is a good composite primary key.
+
+  3. Eliminate Repeating Groups.
+     1. Determine the repeating group.
+     Course ID, Course Name, and Cost is a repeating group.
+
+     Final Grade is really not a repeating group, it is a variable that
+     changes for each student, that's why we didn't include Final Grade
+     as part of the repeating group.
+
+     2. Assigning a primary key for the repeating group.
+     We will choose Course ID as a primary key.
+
+     3. Assigning a primary key for the rest of the table, execluding the
+        repeating group columns.
+        We will choose Student ID as a primary key.
+
+     So, at the end we have Student ID and Course ID as a composite
+     primary key.
+
+Student ID | Fname | Lname | Course ID | Course Name | Cost | Final Grade
+100        | James | Smith | 444       | Math        | 350  | A
+100        | James | Smith | 555       | Science     | 400  | C+
+200        | Marisa| Marcos| 444       | Math        | 350  | B
+200        | Marisa| Marcos| 555       | Science     | 400  | B-
+299        | Sara  | Ahmed | 444       | Math        | 349  | A+
+299        | Sara  | Ahmed | 555       | Science     | 400  | A-
+
+  Second Normal Form (2NF)
+  ========================
+
+  - Remove Partial Dependency
+    - All non-key attributes are fully dependent on the entire primary key
+
+Student
+Student ID is a primary key
+Student ID | Fname | Lname
+100        | James | Smith
+200        | Marisa| Marcos
+299        | Sara  | Ahmed
+
+Course
+Course ID is a primary key
+Course ID | Course Name | Cost
+444       | Math        | 350
+555       | Science     | 400
+
+Student Records
+Student ID and Course ID is a composite primary key
+Student ID | Course ID | Final Grade
+100        | 444       | A
+100        | 555       | C+
+200        | 444       | B
+200        | 555       | B-
+299        | 444       | A+
+299        | 555       | A-
+
+Necessary Redundancy
+====================
+  - Its OK to have necessary redundancy in a table. 1NF, 2NF, and 3NF
+    don't remove necessary redundancy. Not a problem.
+
+  Third Normal Form (3NF)
+  =======================
+
+  - Remove Transitive Dependency
+    - Ensure all non-keys are fully dependent on the PK, No non-key should
+      depend on another non-key.
+      - Remove calculated columns.
+
+Student
+Student ID is a primary key
+Student ID | Fname | Lname
+100        | James | Smith
+200        | Marisa| Marcos
+299        | Sara  | Ahmed
+
+Course
+Course ID is a primary key
+Course ID | Course Name | Cost
+444       | Math        | 350
+555       | Science     | 400
+
+Student Records
+Student ID and Course ID is a composite key
+Student ID | Course ID | Final Grade
+100        | 444       | A
+100        | 555       | C+
+200        | 444       | B
+200        | 555       | B-
+299        | 444       | A+
+299        | 555       | A-
+
+==========================================================================
+
+  General Information (Surrogate Key vs. Natural Key)
+  ===================================================
+  A surrogate/artificial key is a column with artificially auto-generated
+  value.
+  A natural/business key is a key that is formed of attributes that
+  already exist in the real world.
+
+  Examples
+  ========
+  Student ID and Course ID are examples of surrogate key.
+  Driver License, SSN, or Passport # are examples of natural key.
+
+==========================================================================
+
+

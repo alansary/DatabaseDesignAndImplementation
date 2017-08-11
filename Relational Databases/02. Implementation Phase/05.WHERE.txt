@@ -1,0 +1,8 @@
+/*
+SELECT col1, ..., coln FROM table_name WHERE condition_on_a_column;
+*/
+SELECT * FROM Customer WHERE Age > 23;
+SELECT * FROM Customer WHERE FirstName = 'Mohamed';
+SELECT * FROM Customer WHERE Age IS NULL;
+SELECT FirstName, LastName FROM Customer WHERE CustomerID >= 2;
+

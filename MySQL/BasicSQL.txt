@@ -1,0 +1,183 @@
+Keyword			Description
+=======			===========
+SELECT			Fundamental statement for queries
+FROM			Provides table for SELECT statement
+AS			Alias operator
+WHERE			Provides filter condition for SELECT
+COUNT			Function - COUNT()s values
+CREATE DATABASE		Creates a new database
+CREATE TABLE		Creates a new table
+INSERT			Insert row into table
+INTO			Provides table for INSERT statement
+VALUES			Provides values for INSERT statement
+JOIN			Joins tables into common query
+ON			Provides conditions for JOIN
+ORDER BY		Provides sort order for query
+LIKE			Wildcard string operator for WHERE clause
+IN			Provides list of matches for WHERE clause
+AND			Logical operator, requires both conditions to be
+			true
+OR			Logical operator, requires one of the conditions to
+			be true
+NOT			Unary logical operator
+DISTINCT		Used with SELECT to remove duplications from query
+AVG			Aggregate function, returns average value of
+			numbers in column
+GROUP BY		Groups rows for aggregate functions
+UPDATE			Updates (changes) values in table rows
+SET			Provides columns and values for UPDATE statement
+DROP DATABASE		Drops a database, provided its name
+CREATE DATABASE		Creates a database, provided its name
+DROP TABLE		Drops a table, provided its name
+DELETE			Delete rows from table
+RIGHT			Modifies JOIN behavior to include NULL values
+INNER			The default JOIN
+CONCAT			MySQL function, concatenates strings
++			SQL Server operator, concatenates strings
+LENGTH			Provides table for SELECT statement
+RIGHT			String function, returns right side of string
+LEFT			String function, returns left side of string
+UPPER			Returns uppercase string
+LOWER			Returns lowercase string
+ROUND			Returns number rounded to nearest integer
+DESC			Modifies ORDER BY to sort in descending order
+HAVING			Filters rows for aggregate functions
+DISTINCT		In aggregate functions, operate on distinct values
+SUM			Aggregate function, returns sum of numeric values
+AVG			Aggregate function, returns average value of number
+			in volumn
+MIN			Aggregate function, returns smallest of numeric
+			values
+MAX			Aggregate function, returns largest of numeric
+			values
+ALL			Default behavior, includes duplicates in query
+
+SUBSTR			String function, returns subset of string
+TRIM			Trims spaces from string (Python strip)
+ABS			Returns absolute value of a number
+SEC_TO_TIME		MySQL function, returns formatted time from number
+			of seconds
+DIV			Division operator, returns integer quotient
+MOD			Division operator, returns integer remainder
+LPAD			String function, pads characters to the left
+CURDATE			MySQL function, returns current date
+CURTIME			MySQL function, returns current time
+NOW			MySQL function, returns current date and time
+DATE_ADD		MySQL function, adds dates
+DATE_SUB		MySQL function, subtracts dates
+INTERVAL		Provides interval for DATE_ADD/DATE_SUB
+DAY/WEEK/MONTH/YEAR	Provides interval for DATE_ADD/DATE_SUB
+
+Examples
+========
+SELECT 'string';
+SELECT * FROM table_name;
+SELECT COUNT(*) FROM table_name; //Returns the number of rows in the table
+SELECT col1, col2, ..., coln FROM table_name;
+//aliasing
+SELECT col1 AS synonym1, col2 AS 'synonym 2', ..., coln FROM table_name;
+SELECT col1 AS synonym1, ..., coln FROM table_name WHERE condition;
+SELECT col1, COUNT(col2) AS synonym FROM table_name GROUP BY col1;
+CREATE DATABASE database_name;
+CREATE TABLE table_name (
+    column1_name INTEGER/VARCHAR(MAXVALUE)/CHAR(VALUE) UNIQUE/NOT NULL/
+    PRIMARY KEY/AUTO_INCREMENT, ..., columnn_name INTEGER/VARCHAR(MAXVALUE)/
+    CHAR(VALUE) UNIQUE/NOT NULL/PRIMARY KEY/AUTO_INCREMENT
+);
+INSERT INTO table_name
+    ( col1_name, col2_name, ..., coln_name )
+    VALUES (
+	'val1',
+	val2,
+	...,
+	'valn'
+    );
+SELECT x.col1 AS synonym1, x.col2, y.col3 AS synonym3
+    FROM table1 AS x
+    JOIN table2 AS y
+	ON y.primary-key = x.foreign-key
+    ORDER BY coli;
+% is a wild-card that matches any number of characters
+_ is a wild-card that matches any single character
+SELECT col1, col2, ..., coln FROM table_name WHERE col_name LIKE 'wild-card'
+SELECT col1, col2, ..., coln FROM table_name WHERE col_name
+    IN ('value1', 'value2', ..., 'valuen');
+SELECT col1, col2, ..., coln FROM table_name
+    WHERE condition1 AND/OR condition2;
+SELECT col1, col2, ..., coln FROM table_name
+    WHERE NOT condition;
+SELECT DISTINCT //removes duplicates from the result
+SELECT ALL //this is the default selection
+SELECT col1, col2, ..., coln FROM table_name WHERE condition
+    ORDER BY col1, col2, ..., coln;
+SELECT col1, AVG(col2) AS synonym
+    FROM table_name
+    WHERE col1 #WHERE col is not NULL
+    GROUP BY col1
+    ORDER BY AVG(col2) ASC/DESC;
+#the average will be taken from a group of rows that have a common region
+#and they will be grouped together in the result
+UPDATE table_name SET column_name = 'value' WHERE condition;
+CREATE DATABASE database_name;
+DROP DATABASE database_name;
+DROP TABLE table_name;
+DELETE FROM table_name WHERE condition;
+#if you omit the WHERE clause in the DELETE clause, it will be treated as
+#DELETE * FROM table_name; and deletes each and every row in the table.
+SELECT CONCAT('first_literal_string', 'second_literal_string');
+SELECT LENGTH('Literal String');
+SELECT LENGTH(column_name) FROM table_name;
+SELECT CONCAT(col1, string_literal1, ..., string_literaln, coln)
+    FROM table_name;
+SUBSTR('string_literal'/column_name, start_index, end_index); #inclusive
+RIGHT('string_literal'/column_name, number_of_right_most_characters_returned);
+LEFT('string_literal'/column_name, number_of_left_most_characters_returned);
+SELECT ROUND(numeric_data, precision);
+LPAD(string_literal, length, padding_literal_string);
+column_name/numeric_value DIV number;
+column_name/numeric_value MOD number;
+DATE_ADD/SUB(NOW(), INTERVAL number_of_intervals DAY/WEEK/MONTH/YEAR);
+COUNT(DISTINCT column_name) FROM table_name;
+
+Structured Query Language
+=========================
+    SQL SYNTAX = Clause & Expression & Functions
+    Index = A quick lookup table for finding things you need to search for
+            frequently. Indexes are fast because they don't have to carry
+            all the data of a row in the table. Primary key is an index by
+            default. You can use an additional INDEX using INDEX(col_name)
+            in your table definition. Use INDEX whenever you want to use
+            it in JOIN frequently.
+
+Notes
+=====
+- To write a single quote within a string literal, type it as double single
+  quotes.
+- In numeric functions if the data is not numeric, then the result is
+  undefined. In MySQL it will give you 0 but in some DBMSs it will give you
+  NAN.
+- It is always faster to do arithmetic functions in a DBMS rather than an
+  interpreted language like Perl or PHP.
+- Natural formats of dates and times are: YYYY-MM-DD HH:MM:SS
+- Aggregate Functions are called aggregate functions because they provide
+  a result based on data accumulated from a set of rows rather than just
+  on row of a table.
+- GROUP BY column_name groups sets of rows together and operate on those
+  groups separately. GROUP BY groups query into groups and the aggregate
+  function then operate on those groups separately.
+- JOIN occures first, then GROUP BY and then the aggregate function.
+- HAVING for GROUP BY is like WHERE for SELECT.
+- COUNT execludes NULL from the result.
+
+Date Types
+==========
+DATE                    Date only, stores DATE values from the year 1000
+                        to 9999
+TIME                    Time only, has range of +-840 hours
+DATETIME                Date and time
+TIMESTAMP               Just like DATETIME but with few important
+                        distinctions, specifically designed to keep time
+                        for events and stored in GMT, they are converted to
+                        and from local time (the time on the server which
+                        may be differ than the time on the user)
+

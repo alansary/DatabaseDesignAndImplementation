@@ -1,0 +1,22 @@
+Dept Code | Dept Name
+FIN	  | Finance
+HR	  | Human Resources
+IT	  | Information Technology
+RES	  | Research and Development
+
+Emp ID | Emp Fname | Emp Lname | Dept Code
+100    | Michael   | Philips   | FIN
+200    | Sara      | Norman    | HR
+300    | Paul      | McMahen   | FIN
+400    | Michael   | Philips   | FIN
+500    | Chris     | Jacob     | IT
+600    | Omar      | Maisam    | RES
+700    | Johnathon | Don       | HR
+
+One to Many
+===========
+  - Each department has one or many employees |<-
+  - Each employee belongs to one and only one department |-|
+
+Department|-|---------|<-Employee
+

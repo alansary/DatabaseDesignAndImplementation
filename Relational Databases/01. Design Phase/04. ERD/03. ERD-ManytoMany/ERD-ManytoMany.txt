@@ -1,0 +1,34 @@
+Many to Many
+============
+ - Each student takes zero or many courses. 0<-
+ - Each course has one or many students. ->|
+
+Student ID | Student Surname
+100	   | Taylor
+200	   | Patel
+300	   | Williams
+
+Course ID | Course Name
+330	  | Math
+440	  | Biology
+550	  | Computer Studies
+660	  | Technical Writing
+770	  | Communication Skills
+880	  | Physics
+
+Student_has_Course
+Student_StudentID is a foreign key references Student (StudentID)
+Course_CourseID is a foreign key references Course (CourseID)
+Student_StudentID and Course_CourseID is a composite primary key
+Student_StudentID | Course_CourseID | Register Date
+100		  | 330		    | January 1, 2012
+100		  | 440		    | January 1, 2012
+100		  | 880		    | May 15, 2013
+200		  | 770		    | 10 June, 2010
+200		  | 660		    | 10 June, 2010
+300		  | 330		    | January 1, 2012
+300		  | 440		    | January 1, 2012
+300		  | 550		    | April 9, 2014
+
+Student|-|__________0<-Student_has_Course->|__________|-|Course
+

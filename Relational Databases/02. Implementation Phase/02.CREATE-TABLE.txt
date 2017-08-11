@@ -1,0 +1,34 @@
+/*
+CREATE TABLE table_name (
+    col1 data_type [NOT NULL/NULL][UNIQUE][PRIMARY KEY][DEFAULT def_val],
+    ...
+    PRIMARY KEY (PK1, ..., PKn),
+    FOREIGN KEY (FK) REFERENCES table_name (PK),
+    UNIQUE (col1, col2, ..., coln),
+    CHECK (cond1, cond2, ..., condn)
+);
+/*
+data-types:
+    INTEGER
+    VARCHAR
+    CHAR(MAX)
+    NUMERIC(MAX, MAX)
+    DATE
+*/
+*/
+-- Create Customer table
+CREATE TABLE Customer (
+    CustomerID INTEGER NOT NULL,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(15) NOT NULL,
+    Phone INTEGER NULL,
+    PRIMARY KEY (CustomerID)
+);
+/* Oracle Database Staff:
+	-- NUMBER(MAX)
+	-- Oracle DBMS only
+	--DESCRIBE Customer; -- Show Customer table structure
+	--DESC Customer;
+*/
+DROP TABLE Customer; -- Removes the Customer table
+

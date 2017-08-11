@@ -1,0 +1,16 @@
+What is the problem ?
+	Size (Easily managing a database that grows)
+	Ease of updating
+	Accuracy
+	Security
+	Redundancy (Duplications of the data that leads to conflicts)
+	Importance (Inconvenient loss of data)
+What is a database ?
+	Database Management Systems (DBMS)
+		Oracle, SQL Server, MySQL, SQLite, PostGreSQL, MongoDB, ...
+	Relational DBMS
+		Oracle, SQL Server, DB2, MySQL, PostGreSQL, SQLite, MS Access, ...
+	NoSQL DBMS
+		CoushDB, MongoDB, ...
+	DBMS
+		Is a software that is used to create and manage one or more database, it makes sure that your rules are applied.

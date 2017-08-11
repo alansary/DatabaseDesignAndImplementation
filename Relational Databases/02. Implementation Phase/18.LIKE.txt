@@ -1,0 +1,7 @@
+SELECT col1, col2, ..., coln WHERE col LIKE 'pattern';
+pattern
+	_ matches just one character
+	% matches any number of characters
+SELECT * FROM employees WHERE last_name LIKE '%ar%';
+SELECT * FROM employees WHERE first_name LIKE 'M_h%';
+

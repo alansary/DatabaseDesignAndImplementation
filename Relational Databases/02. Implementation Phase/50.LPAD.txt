@@ -1,0 +1,2 @@
+LPAD(string_literal, length, padding_literal_string);
+

@@ -1,0 +1,7 @@
+-- In Operator
+-- SELECT * FROM table_name WHERE col IN (val1, ..., valn);
+SELECT * FROM Customer WHERE FirstName = 'Mohamed'
+    OR FirstName = 'Mahmoud'
+    OR FirstName = 'Nour';
+SELECT * FROM Customer WHERE FirstName IN ('Mohamed', 'Mahmoud', 'Nour');
+

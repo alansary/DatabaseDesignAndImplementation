@@ -1,0 +1,40 @@
+DATE_ADD/SUB(NOW(), INTERVAL number_of_intervals DAY/WEEK/MONTH/YEAR);
+CURDATE                 MySQL function, returns current date
+CURTIME                 MySQL function, returns current time
+NOW                     MySQL function, returns current date and time
+DATE_ADD                MySQL function, adds dates
+DATE_SUB                MySQL function, subtracts dates
+INTERVAL                Provides interval for DATE_ADD/DATE_SUB
+DAY/WEEK/MONTH/YEAR     Provides interval for DATE_ADD/DATE_SUB
+SEC_TO_TIME             MySQL function, returns formatted time from number
+EXTRACT(YEAR/MONTH/DAY FROM time)
+Date Types
+==========
+DATE                    Date only, stores DATE values from the year 1000
+                        to 9999
+			YYYY-MM-DD
+TIME                    Time only, has range of +-840 hours
+			HH:MM:SS OR HH:MM:SS.FF
+DATETIME                Date and time
+TIMESTAMP               Just like DATETIME but with few important
+                        distinctions, specifically designed to keep time
+                        for events and stored in GMT, they are converted to
+                        and from local time (the time on the server which
+                        may be differ than the time on the user)
+
+SELECT CURDATE() AS 'Current Date', CURTIME() AS 'Current Time', NOW() AS 'Time Now';
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 2 WEEK) AS Later;
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 2 DAY) AS Later;
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 2 MONTH) AS Later;
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 2 YEAR) AS Later;
+SELECT NOW(), DATE_SUB(NOW(), INTERVAL 2 WEEK) AS Earlier;
+SELECT NOW(), DATE_SUB(NOW(), INTERVAL 2 DAY) AS Earlier;
+SELECT NOW(), DATE_SUB(NOW(), INTERVAL 2 MONTH) AS Earlier;
+SELECT NOW(), DATE_SUB(NOW(), INTERVAL 2 YEAR) AS Earlier;
+
+Oracle
+======
+-- Subtracting a date/time/timestamp value from another gives an interval value
+-- Interval values can be added to date/time/timestamp values
+SELECT SYSDATE FROM DUAL;
+

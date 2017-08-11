@@ -1,0 +1,13 @@
+SELECT DISTINCT col(s) FROM table_name;
+
+SELECT jobs_id FROM employees;
+SELECT DISTINCT jobs_id FROM employees;
+SELECT COUNT(jobs_id) FROM employees;
+SELECT COUNT(DISTINCT jobs_id) FROM employees;
+SELECT DISTINCT jobs_id,first_name FROM employees;
+SELECT COUNT(DISTINCT jobs_id, first_name), COUNT(DISTINCT jobs_id), COUNT(jobs_id) FROM employees;
+
+Default is
+==========
+SELECT ALL
+

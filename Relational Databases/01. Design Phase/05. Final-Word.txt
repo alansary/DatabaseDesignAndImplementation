@@ -1,0 +1,11 @@
+Ignoring One to Many and Many to Many relationships will cause critical
+problems, however, ignoring One to One and Extended One to One relationships
+does not, it is optional to create One to One and Extended One to One
+relationships.
+
+Whenever you found a need for One to One or Extended One to One relationship
+, you can choose as follows:
+  - Break up the table and apply the relationship.
+  - Leave the table as it is, it is not mandatory.
+  - Use views to achieve the same result as applying the relationship.
+

@@ -1,0 +1,21 @@
+-- ORDER BY
+/*
+SELECT * FROM table_name WHERE condition
+    ORDER BY col1 [DEFAULT = DESC/ASC], ..., coln[DEFAULT = DESC/ASC];
+*/
+/*
+SELECT con1, ..., coln FROM table_name WHERE condition
+    ORDER BY i1 [DEFAULT = DESC/ASC], ..., in [DEFAULT = DESC/ASC];
+where ix = 1, 2, ..., n for all x = 1, 2, ..., n.
+*/
+SELECT FirstName, LastName FROM Customer WHERE NOT Age IS NULL
+    ORDER BY Age;
+SELECT FirstName, LastName FROM Customer WHERE NOT Age IS NULL
+    ORDER BY Age ASC;
+SELECT FirstName, LastName FROM Customer WHERE NOT Age IS NULL
+    ORDER BY Age DESC;
+SELECT * FROM Customer ORDER BY FirstName, LastName;
+SELECT * FROM Customer ORDER BY FirstName ASC, LastName DESC;
+SELECT first_name, last_name FROM employees ORDER BY 1 DESC;
+SELECT frist_name, last_name FROM employees ORDER BY 2 ASC;
+
